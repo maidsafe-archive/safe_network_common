@@ -98,6 +98,9 @@
 <span id="55">55</span>
 <span id="56">56</span>
 <span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 MaidSafe.net limited.</span>
 <span class='comment'>//</span>
@@ -152,10 +155,13 @@
 
 <span class='doccomment'>/// Messaging infrastructure</span>
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>messaging</span>;
+<span class='doccomment'>/// Error communication between vaults and core</span>
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>client_errors</span>;
 
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>client_errors</span>::<span class='ident'>ClientError</span>;
-
-<span class='kw'>mod</span> <span class='ident'>client_errors</span>;
+<span class='doccomment'>/// Structured Data Tag for Session Packet Type</span>
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>TYPE_TAG_SESSION_PACKET</span>: <span class='ident'>u64</span> <span class='op'>=</span> <span class='number'>0</span>;
+<span class='doccomment'>/// Structured Data Tag for DNS Packet Type</span>
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>TYPE_TAG_DNS_PACKET</span>: <span class='ident'>u64</span> <span class='op'>=</span> <span class='number'>5</span>;
 </pre>
 </section>
     <section id='search' class="content hidden"></section>

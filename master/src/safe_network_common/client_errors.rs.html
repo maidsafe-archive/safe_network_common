@@ -74,6 +74,24 @@
 <span id="31">31</span>
 <span id="32">32</span>
 <span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 MaidSafe.net limited.</span>
 <span class='comment'>//</span>
@@ -93,8 +111,20 @@
 <span class='comment'>// relating to use of the SAFE Network Software.</span>
 
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>Eq</span>, <span class='ident'>PartialEq</span>, <span class='ident'>Ord</span>, <span class='ident'>PartialOrd</span>, <span class='ident'>Hash</span>, <span class='ident'>RustcEncodable</span>, <span class='ident'>RustcDecodable</span>)]</span>
-<span class='doccomment'>/// Errors in various operations involving Core and Vaults</span>
-<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>ClientError</span> {
+<span class='doccomment'>/// Errors in GET (non-mutating) operations involving Core and Vaults</span>
+<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>GetError</span> {
+    <span class='doccomment'>/// SAFE Account does not exist for client</span>
+    <span class='ident'>NoSuchAccount</span>,
+    <span class='doccomment'>/// Requested data not found</span>
+    <span class='ident'>NoSuchData</span>,
+    <span class='doccomment'>/// Unknown error - Errors occuring at Vault level which have no bearing on clients, eg.</span>
+    <span class='doccomment'>/// misc errors like serialisation failure, db failure etc</span>
+    <span class='ident'>Unknown</span>,
+}
+
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Clone</span>, <span class='ident'>Eq</span>, <span class='ident'>PartialEq</span>, <span class='ident'>Ord</span>, <span class='ident'>PartialOrd</span>, <span class='ident'>Hash</span>, <span class='ident'>RustcEncodable</span>, <span class='ident'>RustcDecodable</span>)]</span>
+<span class='doccomment'>/// Errors in PUT/POST/DELETE (mutating) operations involving Core and Vaults</span>
+<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>MutationError</span> {
     <span class='doccomment'>/// SAFE Account does not exist for client</span>
     <span class='ident'>NoSuchAccount</span>,
     <span class='doccomment'>/// Attempt to take an account network name that already exists</span>
@@ -105,8 +135,14 @@
     <span class='ident'>DataExists</span>,
     <span class='doccomment'>/// Insufficient balance for performing a given mutating operation</span>
     <span class='ident'>LowBalance</span>,
-    <span class='doccomment'>/// Invalid data versioning for performing a given mutating operation</span>
-    <span class='ident'>InvalidVersion</span>,
+    <span class='doccomment'>/// Invalid successor for performing a given mutating operation, e.g. signature mismatch,</span>
+    <span class='doccomment'>/// invalid data versioning etc.</span>
+    <span class='ident'>InvalidSuccessor</span>,
+    <span class='doccomment'>/// Invalid Operation such as a POST on ImmutableData etc</span>
+    <span class='ident'>InvalidOperation</span>,
+    <span class='doccomment'>/// Unknown error - Errors occuring at Vault level which have no bearing on clients, eg.</span>
+    <span class='doccomment'>/// misc errors like serialisation failure, db failure etc</span>
+    <span class='ident'>Unknown</span>,
 }
 </pre>
 </section>
