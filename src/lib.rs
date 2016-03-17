@@ -51,7 +51,10 @@ extern crate maidsafe_utilities;
 
 /// Messaging infrastructure
 pub mod messaging;
+/// Error communication between vaults and core
+pub mod client_errors;
 
-pub use client_errors::ClientError;
-
-mod client_errors;
+/// Structured Data Tag for Session Packet Type
+pub const TYPE_TAG_SESSION_PACKET: u64 = 0;
+/// Structured Data Tag for DNS Packet Type
+pub const TYPE_TAG_DNS_PACKET: u64 = 5;

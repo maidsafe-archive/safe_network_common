@@ -16,8 +16,20 @@
 // relating to use of the SAFE Network Software.
 
 #[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, RustcEncodable, RustcDecodable)]
-/// Errors in various operations involving Core and Vaults
-pub enum ClientError {
+/// Errors in GET (non-mutating) operations involving Core and Vaults
+pub enum GetError {
+    /// SAFE Account does not exist for client
+    NoSuchAccount,
+    /// Requested data not found
+    NoSuchData,
+    /// Unknown error - Errors occuring at Vault level which have no bearing on clients, eg.
+    /// misc errors like serialisation failure, db failure etc
+    Unknown,
+}
+
+#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, RustcEncodable, RustcDecodable)]
+/// Errors in PUT/POST/DELETE (mutating) operations involving Core and Vaults
+pub enum MutationError {
     /// SAFE Account does not exist for client
     NoSuchAccount,
     /// Attempt to take an account network name that already exists
@@ -28,6 +40,12 @@ pub enum ClientError {
     DataExists,
     /// Insufficient balance for performing a given mutating operation
     LowBalance,
-    /// Invalid data versioning for performing a given mutating operation
-    InvalidVersion,
+    /// Invalid successor for performing a given mutating operation, e.g. signature mismatch,
+    /// invalid data versioning etc.
+    InvalidSuccessor,
+    /// Invalid Operation such as a POST on ImmutableData etc
+    InvalidOperation,
+    /// Unknown error - Errors occuring at Vault level which have no bearing on clients, eg.
+    /// misc errors like serialisation failure, db failure etc
+    Unknown,
 }
