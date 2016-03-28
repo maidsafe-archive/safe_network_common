@@ -48,4 +48,6 @@ pub enum MutationError {
     /// Unknown error - Errors occuring at Vault level which have no bearing on clients, eg.
     /// misc errors like serialisation failure, db failure etc
     Unknown,
+    /// Request timed-out waiting for response.
+    Timeout,
 }
