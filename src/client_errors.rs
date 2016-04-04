@@ -50,4 +50,7 @@ pub enum MutationError {
     Unknown,
     /// Request timed-out waiting for response.
     Timeout,
+    /// The loss of sacrificial copies indicates the network as a whole is no longer having
+    /// enough space to accept further put request. Have to wait more nodes to join.
+    NetworkFull,
 }
