@@ -48,8 +48,6 @@ pub enum MutationError {
     /// Unknown error - Errors occuring at Vault level which have no bearing on clients, eg.
     /// misc errors like serialisation failure, db failure etc
     Unknown,
-    /// Request timed-out waiting for response.
-    Timeout,
     /// The loss of sacrificial copies indicates the network as a whole is no longer having
     /// enough space to accept further put request. Have to wait more nodes to join.
     NetworkFull,
