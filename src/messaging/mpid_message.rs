@@ -163,7 +163,7 @@ mod test {
                                  recipient.clone(),
                                  body.clone(),
                                  &secret_key)
-                    .is_err());
+            .is_err());
         let _ = body.pop();
 
         // Check verify function with a valid and invalid key

@@ -10,9 +10,10 @@ repository = "https://github.com/maidsafe/safe_network_common"
 version = "0.1.1"
 
 [dependencies]
-clippy = {version = "~0.0.61", optional = true}
-maidsafe_utilities = "~0.5.0"
+clippy = {version = "~0.0.69", optional = true}
+maidsafe_utilities = "~0.6.0"
+quick-error = "~1.0.0"
 rand = "~0.3.14"
 rustc-serialize = "~0.3.19"
-sodiumoxide = "~0.0.9"
+sodiumoxide = "~0.0.10"
 xor_name = "~0.1.0"

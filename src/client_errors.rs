@@ -15,40 +15,80 @@
 // Please review the Licences for the specific language governing permissions and limitations
 // relating to use of the SAFE Network Software.
 
-#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, RustcEncodable, RustcDecodable)]
-/// Errors in GET (non-mutating) operations involving Core and Vaults
-pub enum GetError {
-    /// SAFE Account does not exist for client
-    NoSuchAccount,
-    /// Requested data not found
-    NoSuchData,
-    /// Unknown error - Errors occuring at Vault level which have no bearing on clients, eg.
-    /// misc errors like serialisation failure, db failure etc
-    Unknown,
+quick_error! {
+    /// Errors in Get (non-mutating) operations involving Core and Vaults
+    #[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, RustcEncodable, RustcDecodable)]
+    pub enum GetError {
+        /// SAFE Account does not exist for client
+        NoSuchAccount {
+            description("No such account")
+            display("SAFE Account does not exist for client")
+        }
+        /// Requested data not found
+        NoSuchData {
+            description("No such data")
+            display("Requested data not found")
+        }
+        /// Network error occurring at Vault level which has no bearing on clients, e.g.
+        /// serialisation failure or database failure
+        NetworkOther(error: String) {
+            description(error)
+            display("Error on Vault network: {}", error)
+        }
+    }
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, RustcEncodable, RustcDecodable)]
-/// Errors in PUT/POST/DELETE (mutating) operations involving Core and Vaults
-pub enum MutationError {
-    /// SAFE Account does not exist for client
-    NoSuchAccount,
-    /// Attempt to take an account network name that already exists
-    AccountExists,
-    /// Requested data not found
-    NoSuchData,
-    /// Attempt to create a mutable data when data with such a name already exists
-    DataExists,
-    /// Insufficient balance for performing a given mutating operation
-    LowBalance,
-    /// Invalid successor for performing a given mutating operation, e.g. signature mismatch,
-    /// invalid data versioning etc.
-    InvalidSuccessor,
-    /// Invalid Operation such as a POST on ImmutableData etc
-    InvalidOperation,
-    /// Unknown error - Errors occuring at Vault level which have no bearing on clients, eg.
-    /// misc errors like serialisation failure, db failure etc
-    Unknown,
-    /// The loss of sacrificial copies indicates the network as a whole is no longer having
-    /// enough space to accept further put request. Have to wait more nodes to join.
-    NetworkFull,
+quick_error! {
+    /// Errors in Put/Post/Delete (mutating) operations involving Core and Vaults
+    #[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, RustcEncodable, RustcDecodable)]
+    pub enum MutationError {
+        /// SAFE Account does not exist for client
+        NoSuchAccount {
+            description("No such account")
+            display("Account does not exist for client")
+        }
+        /// Attempt to take an account network name that already exists
+        AccountExists {
+            description("Account exists")
+            display("Account already exists for client")
+        }
+        /// Requested data not found
+        NoSuchData {
+            description("No such data")
+            display("Requested data not found")
+        }
+        /// Attempt to create a mutable data when data with such a name already exists
+        DataExists {
+            description("Data exists")
+            display("Data given already exists")
+        }
+        /// Insufficient balance for performing a given mutating operation
+        LowBalance {
+            description("Low account balance")
+            display("Insufficient account balance for this operation")
+        }
+        /// Invalid successor for performing a given mutating operation, e.g. signature mismatch or
+        /// invalid data versioning
+        InvalidSuccessor {
+            description("Invalid data successor")
+            display("Data given is not a valid successor of stored data")
+        }
+        /// Invalid Operation such as a POST on ImmutableData
+        InvalidOperation {
+            description("Invalid operation")
+            display("Requested operation is not allowed")
+        }
+        /// The loss of sacrificial copies indicates the network as a whole is no longer having
+        /// enough space to accept further put request so have to wait for more nodes to join
+        NetworkFull {
+            description("Network full")
+            display("Network cannot store any further data")
+        }
+        /// Network error occurring at Vault level which has no bearing on clients, e.g.
+        /// serialisation failure or database failure
+        NetworkOther(error: String) {
+            description(error)
+            display("Error on Vault network: {}", error)
+        }
+    }
 }
