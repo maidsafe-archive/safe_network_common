@@ -42,17 +42,21 @@
 #![cfg_attr(feature="clippy", deny(clippy, clippy_pedantic))]
 #![cfg_attr(feature="clippy", allow(use_debug))]
 
-extern crate rand;
-extern crate xor_name;
-extern crate sodiumoxide;
-extern crate rustc_serialize;
 #[macro_use]
 extern crate maidsafe_utilities;
+#[allow(unused_extern_crates)]
+// Needed because the crate is only used for macros
+#[macro_use]
+extern crate quick_error;
+extern crate rand;
+extern crate rustc_serialize;
+extern crate sodiumoxide;
+extern crate xor_name;
 
-/// Messaging infrastructure
-pub mod messaging;
 /// Error communication between vaults and core
 pub mod client_errors;
+/// Messaging infrastructure
+pub mod messaging;
 
 /// Structured Data Tag for Session Packet Type
 pub const TYPE_TAG_SESSION_PACKET: u64 = 0;

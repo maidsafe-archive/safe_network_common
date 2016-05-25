@@ -17,21 +17,28 @@
 
 use maidsafe_utilities::serialisation::SerialisationError;
 
-/// Error types relating to MPID messaging.
-#[derive(Debug)]
-pub enum Error {
-    /// Used where the length of a [header's `metadata`](struct.MpidHeader.html#method.new) exceeds
-    /// [`MAX_HEADER_METADATA_SIZE`](constant.MAX_HEADER_METADATA_SIZE.html).
-    MetadataTooLarge,
-    /// Used where the length of a [message's `body`](struct.MpidMessage.html#method.new) exceeds
-    /// [`MAX_BODY_SIZE`](constant.MAX_BODY_SIZE.html).
-    BodyTooLarge,
-    /// Serialisation error.
-    Serialisation(SerialisationError),
-}
-
-impl From<SerialisationError> for Error {
-    fn from(error: SerialisationError) -> Error {
-        Error::Serialisation(error)
+quick_error! {
+    /// Error types relating to MPID messaging.
+    #[derive(Debug)]
+    pub enum Error {
+        /// Used where the length of a [header's `metadata`](struct.MpidHeader.html#method.new)
+        /// exceeds [`MAX_HEADER_METADATA_SIZE`](constant.MAX_HEADER_METADATA_SIZE.html).
+        MetadataTooLarge {
+            description("Header too large")
+            display("Message header too large")
+        }
+        /// Used where the length of a [message's `body`](struct.MpidMessage.html#method.new)
+        /// exceeds [`MAX_BODY_SIZE`](constant.MAX_BODY_SIZE.html).
+        BodyTooLarge {
+            description("Body too large")
+            display("Message body too large")
+        }
+        /// Serialisation error.
+        Serialisation(error: SerialisationError) {
+            cause(error)
+            description(error.description())
+            display("Serialisation error: {}", error)
+            from()
+        }
     }
 }
