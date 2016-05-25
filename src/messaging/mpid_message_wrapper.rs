@@ -19,7 +19,7 @@
 // use sodiumoxide::crypto::hash::sha512;
 // use sodiumoxide::crypto::sign::{self, PublicKey, SecretKey, Signature};
 use super::{MpidHeader, MpidMessage};
-use xor_name::XorName;
+use routing::XorName;
 
 /// A serialisable wrapper to allow multiplexing all MPID message types and actions via a single
 /// type.

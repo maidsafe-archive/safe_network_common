@@ -24,11 +24,11 @@ use std::sync::{Once, ONCE_INIT};
 
 use maidsafe_utilities::serialisation::serialise;
 use rand::{self, Rng};
+use routing::XorName;
 use sodiumoxide;
 use sodiumoxide::crypto::hash::sha512;
 use sodiumoxide::crypto::sign::{self, PublicKey, SecretKey, Signature};
 use super::{Error, GUID_SIZE};
-use xor_name::XorName;
 use messaging;
 
 static INITIALISE_SODIUMOXIDE: Once = ONCE_INIT;
@@ -64,7 +64,10 @@ impl MpidHeader {
     ///
     /// An error will be returned if `metadata` exceeds `MAX_HEADER_METADATA_SIZE` or if
     /// serialisation during the signing process fails.
-    pub fn new(sender: XorName, metadata: Vec<u8>, secret_key: &SecretKey) -> Result<MpidHeader, Error> {
+    pub fn new(sender: XorName,
+               metadata: Vec<u8>,
+               secret_key: &SecretKey)
+               -> Result<MpidHeader, Error> {
         assert!(Self::initialise_sodiumoxide());
         if metadata.len() > MAX_HEADER_METADATA_SIZE {
             return Err(Error::MetadataTooLarge);
@@ -145,8 +148,8 @@ impl Debug for MpidHeader {
 mod test {
     use super::*;
     use rand;
+    use routing::XorName;
     use sodiumoxide::crypto::sign;
-    use xor_name::XorName;
     use messaging;
 
     #[test]
@@ -177,8 +180,10 @@ mod test {
 
         // Check that identically-constructed headers retain identical sender and metadata, but have
         // different GUIDs and signatures.
-        let header1 = unwrap_result!(MpidHeader::new(sender.clone(), metadata.clone(), &secret_key));
-        let header2 = unwrap_result!(MpidHeader::new(sender.clone(), metadata.clone(), &secret_key));
+        let header1 =
+            unwrap_result!(MpidHeader::new(sender.clone(), metadata.clone(), &secret_key));
+        let header2 =
+            unwrap_result!(MpidHeader::new(sender.clone(), metadata.clone(), &secret_key));
         assert!(header1 != header2);
         assert_eq!(*header1.sender(), sender);
         assert_eq!(header1.sender(), header2.sender());
