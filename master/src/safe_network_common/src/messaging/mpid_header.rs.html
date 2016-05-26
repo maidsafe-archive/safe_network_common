@@ -234,6 +234,11 @@
 <span id="191">191</span>
 <span id="192">192</span>
 <span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2016 MaidSafe.net limited.</span>
 <span class='comment'>//</span>
@@ -261,11 +266,11 @@
 
 <span class='kw'>use</span> <span class='ident'>maidsafe_utilities</span>::<span class='ident'>serialisation</span>::<span class='ident'>serialise</span>;
 <span class='kw'>use</span> <span class='ident'>rand</span>::{<span class='self'>self</span>, <span class='ident'>Rng</span>};
+<span class='kw'>use</span> <span class='ident'>routing</span>::<span class='ident'>XorName</span>;
 <span class='kw'>use</span> <span class='ident'>sodiumoxide</span>;
 <span class='kw'>use</span> <span class='ident'>sodiumoxide</span>::<span class='ident'>crypto</span>::<span class='ident'>hash</span>::<span class='ident'>sha512</span>;
 <span class='kw'>use</span> <span class='ident'>sodiumoxide</span>::<span class='ident'>crypto</span>::<span class='ident'>sign</span>::{<span class='self'>self</span>, <span class='ident'>PublicKey</span>, <span class='ident'>SecretKey</span>, <span class='ident'>Signature</span>};
 <span class='kw'>use</span> <span class='ident'>super</span>::{<span class='ident'>Error</span>, <span class='ident'>GUID_SIZE</span>};
-<span class='kw'>use</span> <span class='ident'>xor_name</span>::<span class='ident'>XorName</span>;
 <span class='kw'>use</span> <span class='ident'>messaging</span>;
 
 <span class='kw'>static</span> <span class='ident'>INITIALISE_SODIUMOXIDE</span>: <span class='ident'>Once</span> <span class='op'>=</span> <span class='ident'>ONCE_INIT</span>;
@@ -301,7 +306,10 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// An error will be returned if `metadata` exceeds `MAX_HEADER_METADATA_SIZE` or if</span>
     <span class='doccomment'>/// serialisation during the signing process fails.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>sender</span>: <span class='ident'>XorName</span>, <span class='ident'>metadata</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>, <span class='ident'>secret_key</span>: <span class='kw-2'>&amp;</span><span class='ident'>SecretKey</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>MpidHeader</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>sender</span>: <span class='ident'>XorName</span>,
+               <span class='ident'>metadata</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>,
+               <span class='ident'>secret_key</span>: <span class='kw-2'>&amp;</span><span class='ident'>SecretKey</span>)
+               <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>MpidHeader</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
         <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>Self</span>::<span class='ident'>initialise_sodiumoxide</span>());
         <span class='kw'>if</span> <span class='ident'>metadata</span>.<span class='ident'>len</span>() <span class='op'>&gt;</span> <span class='ident'>MAX_HEADER_METADATA_SIZE</span> {
             <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>Error</span>::<span class='ident'>MetadataTooLarge</span>);
@@ -382,8 +390,8 @@
 <span class='kw'>mod</span> <span class='ident'>test</span> {
     <span class='kw'>use</span> <span class='ident'>super</span>::<span class='op'>*</span>;
     <span class='kw'>use</span> <span class='ident'>rand</span>;
+    <span class='kw'>use</span> <span class='ident'>routing</span>::<span class='ident'>XorName</span>;
     <span class='kw'>use</span> <span class='ident'>sodiumoxide</span>::<span class='ident'>crypto</span>::<span class='ident'>sign</span>;
-    <span class='kw'>use</span> <span class='ident'>xor_name</span>::<span class='ident'>XorName</span>;
     <span class='kw'>use</span> <span class='ident'>messaging</span>;
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
@@ -414,8 +422,10 @@
 
         <span class='comment'>// Check that identically-constructed headers retain identical sender and metadata, but have</span>
         <span class='comment'>// different GUIDs and signatures.</span>
-        <span class='kw'>let</span> <span class='ident'>header1</span> <span class='op'>=</span> <span class='macro'>unwrap_result</span><span class='macro'>!</span>(<span class='ident'>MpidHeader</span>::<span class='ident'>new</span>(<span class='ident'>sender</span>.<span class='ident'>clone</span>(), <span class='ident'>metadata</span>.<span class='ident'>clone</span>(), <span class='kw-2'>&amp;</span><span class='ident'>secret_key</span>));
-        <span class='kw'>let</span> <span class='ident'>header2</span> <span class='op'>=</span> <span class='macro'>unwrap_result</span><span class='macro'>!</span>(<span class='ident'>MpidHeader</span>::<span class='ident'>new</span>(<span class='ident'>sender</span>.<span class='ident'>clone</span>(), <span class='ident'>metadata</span>.<span class='ident'>clone</span>(), <span class='kw-2'>&amp;</span><span class='ident'>secret_key</span>));
+        <span class='kw'>let</span> <span class='ident'>header1</span> <span class='op'>=</span>
+            <span class='macro'>unwrap_result</span><span class='macro'>!</span>(<span class='ident'>MpidHeader</span>::<span class='ident'>new</span>(<span class='ident'>sender</span>.<span class='ident'>clone</span>(), <span class='ident'>metadata</span>.<span class='ident'>clone</span>(), <span class='kw-2'>&amp;</span><span class='ident'>secret_key</span>));
+        <span class='kw'>let</span> <span class='ident'>header2</span> <span class='op'>=</span>
+            <span class='macro'>unwrap_result</span><span class='macro'>!</span>(<span class='ident'>MpidHeader</span>::<span class='ident'>new</span>(<span class='ident'>sender</span>.<span class='ident'>clone</span>(), <span class='ident'>metadata</span>.<span class='ident'>clone</span>(), <span class='kw-2'>&amp;</span><span class='ident'>secret_key</span>));
         <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>header1</span> <span class='op'>!=</span> <span class='ident'>header2</span>);
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='op'>*</span><span class='ident'>header1</span>.<span class='ident'>sender</span>(), <span class='ident'>sender</span>);
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>header1</span>.<span class='ident'>sender</span>(), <span class='ident'>header2</span>.<span class='ident'>sender</span>());
