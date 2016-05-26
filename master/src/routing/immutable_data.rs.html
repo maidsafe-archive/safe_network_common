@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.20.0/src/immutable_data.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.21.0/src/immutable_data.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>immutable_data.rs.html -- source</title>
@@ -125,7 +125,6 @@
 <span id="82">82</span>
 <span id="83">83</span>
 <span id="84">84</span>
-<span id="85">85</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 MaidSafe.net limited.</span>
 <span class='comment'>//</span>
@@ -146,7 +145,7 @@
 
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>::{<span class='self'>self</span>, <span class='ident'>Debug</span>, <span class='ident'>Formatter</span>};
 
-<span class='kw'>use</span> <span class='ident'>sodiumoxide</span>::<span class='ident'>crypto</span>::<span class='ident'>hash</span>::<span class='ident'>sha512</span>;
+<span class='kw'>use</span> <span class='ident'>sodiumoxide</span>::<span class='ident'>crypto</span>::<span class='ident'>hash</span>::<span class='ident'>sha256</span>;
 <span class='kw'>use</span> <span class='ident'>data</span>::<span class='ident'>DataIdentifier</span>;
 <span class='kw'>use</span> <span class='ident'>xor_name</span>::<span class='ident'>XorName</span>;
 
@@ -171,7 +170,7 @@
 
     <span class='doccomment'>/// Returns name ensuring invariant.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>name</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>XorName</span> {
-        <span class='ident'>XorName</span>(<span class='ident'>sha512</span>::<span class='ident'>hash</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>value</span>).<span class='number'>0</span>)
+        <span class='ident'>XorName</span>(<span class='ident'>sha256</span>::<span class='ident'>hash</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>value</span>).<span class='number'>0</span>)
     }
 
     <span class='doccomment'>/// Returns size of contained value.</span>
@@ -205,9 +204,8 @@
         <span class='comment'>// Normal</span>
         <span class='kw'>let</span> <span class='ident'>immutable_data</span> <span class='op'>=</span> <span class='ident'>ImmutableData</span>::<span class='ident'>new</span>(<span class='ident'>value</span>);
         <span class='kw'>let</span> <span class='ident'>immutable_data_name</span> <span class='op'>=</span> <span class='ident'>immutable_data</span>.<span class='ident'>name</span>().<span class='number'>0</span>.<span class='ident'>as_ref</span>().<span class='ident'>to_hex</span>();
-        <span class='kw'>let</span> <span class='ident'>expected_immutable_data_name</span> <span class='op'>=</span> <span class='string'>&quot;9f1c9e526f47e36d782de464ea9df0a31a5c19c321f2a5d9c8faac\
-                                            dda4d59abc713445c8c853e1842d7c2c2311650df1ee2410737193\
-                                            5b6be88a10cbf4cd2f8f&quot;</span>;
+        <span class='kw'>let</span> <span class='ident'>expected_immutable_data_name</span> <span class='op'>=</span>
+            <span class='string'>&quot;ec0775555a7a6afba5f6e0a1deaa06f8928da80cf6ca94742ecc2a00c31033d3&quot;</span>;
 
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='kw-2'>&amp;</span><span class='ident'>expected_immutable_data_name</span>, <span class='kw-2'>&amp;</span><span class='ident'>immutable_data_name</span>);
     }

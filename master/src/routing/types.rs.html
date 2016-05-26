@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.20.0/src/types.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.21.0/src/types.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>types.rs.html -- source</title>
@@ -185,7 +185,7 @@
     <span class='doccomment'>/// Generate a `MessageId` with value 0. This should only be used for messages where there is</span>
     <span class='doccomment'>/// no danger of duplication.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>zero</span>() <span class='op'>-&gt;</span> <span class='ident'>MessageId</span> {
-        <span class='ident'>MessageId</span>(<span class='ident'>XorName</span>([<span class='number'>0</span>; <span class='number'>64</span>]))
+        <span class='ident'>MessageId</span>(<span class='ident'>XorName</span>([<span class='number'>0</span>; <span class='number'>32</span>]))
     }
 
     <span class='doccomment'>/// Generate a new `MessageId` with contents extracted from lost node.</span>

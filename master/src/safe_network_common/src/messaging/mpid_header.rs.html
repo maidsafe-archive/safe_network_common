@@ -268,7 +268,7 @@
 <span class='kw'>use</span> <span class='ident'>rand</span>::{<span class='self'>self</span>, <span class='ident'>Rng</span>};
 <span class='kw'>use</span> <span class='ident'>routing</span>::<span class='ident'>XorName</span>;
 <span class='kw'>use</span> <span class='ident'>sodiumoxide</span>;
-<span class='kw'>use</span> <span class='ident'>sodiumoxide</span>::<span class='ident'>crypto</span>::<span class='ident'>hash</span>::<span class='ident'>sha512</span>;
+<span class='kw'>use</span> <span class='ident'>sodiumoxide</span>::<span class='ident'>crypto</span>::<span class='ident'>hash</span>::<span class='ident'>sha256</span>;
 <span class='kw'>use</span> <span class='ident'>sodiumoxide</span>::<span class='ident'>crypto</span>::<span class='ident'>sign</span>::{<span class='self'>self</span>, <span class='ident'>PublicKey</span>, <span class='ident'>SecretKey</span>, <span class='ident'>Signature</span>};
 <span class='kw'>use</span> <span class='ident'>super</span>::{<span class='ident'>Error</span>, <span class='ident'>GUID_SIZE</span>};
 <span class='kw'>use</span> <span class='ident'>messaging</span>;
@@ -353,7 +353,7 @@
     <span class='doccomment'>/// of the serialised header, so its use should be minimised.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>name</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>XorName</span>, <span class='ident'>Error</span><span class='op'>&gt;</span> {
         <span class='kw'>let</span> <span class='ident'>encoded</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>serialise</span>(<span class='self'>self</span>));
-        <span class='prelude-val'>Ok</span>(<span class='ident'>XorName</span>(<span class='ident'>sha512</span>::<span class='ident'>hash</span>(<span class='kw-2'>&amp;</span><span class='ident'>encoded</span>[..]).<span class='number'>0</span>))
+        <span class='prelude-val'>Ok</span>(<span class='ident'>XorName</span>(<span class='ident'>sha256</span>::<span class='ident'>hash</span>(<span class='kw-2'>&amp;</span><span class='ident'>encoded</span>[..]).<span class='number'>0</span>))
     }
 
     <span class='doccomment'>/// Validates the header&#39;s signature against the provided `PublicKey`.</span>
