@@ -15,6 +15,9 @@
 // Please review the Licences for the specific language governing permissions and limitations
 // relating to use of the SAFE Network Software.
 
+use std::error::Error as StdError;
+use std::fmt::{self, Display, Formatter};
+
 use maidsafe_utilities::serialisation::SerialisationError;
 
 /// Error types relating to MPID messaging.
@@ -28,6 +31,33 @@ pub enum Error {
     BodyTooLarge,
     /// Serialisation error.
     Serialisation(SerialisationError),
+}
+
+impl Display for Error {
+    fn fmt(&self, formatter: &mut Formatter) -> fmt::Result {
+        match *self {
+            Error::MetadataTooLarge => write!(formatter, "Message header too large"),
+            Error::BodyTooLarge => write!(formatter, "Message body too large"),
+            Error::Serialisation(ref error) => write!(formatter, "Serialisation error: {}", error),
+        }
+    }
+}
+
+impl StdError for Error {
+    fn description(&self) -> &str {
+        match *self {
+            Error::MetadataTooLarge => "Header too large",
+            Error::BodyTooLarge => "Body too large",
+            Error::Serialisation(ref error) => error.description(),
+        }
+    }
+
+    fn cause(&self) -> Option<&StdError> {
+        match *self {
+            Error::Serialisation(ref error) => Some(error),
+            _ => None,
+        }
+    }
 }
 
 impl From<SerialisationError> for Error {
