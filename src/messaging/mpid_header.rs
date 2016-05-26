@@ -26,7 +26,7 @@ use maidsafe_utilities::serialisation::serialise;
 use rand::{self, Rng};
 use routing::XorName;
 use sodiumoxide;
-use sodiumoxide::crypto::hash::sha512;
+use sodiumoxide::crypto::hash::sha256;
 use sodiumoxide::crypto::sign::{self, PublicKey, SecretKey, Signature};
 use super::{Error, GUID_SIZE};
 use messaging;
@@ -111,7 +111,7 @@ impl MpidHeader {
     /// of the serialised header, so its use should be minimised.
     pub fn name(&self) -> Result<XorName, Error> {
         let encoded = try!(serialise(self));
-        Ok(XorName(sha512::hash(&encoded[..]).0))
+        Ok(XorName(sha256::hash(&encoded[..]).0))
     }
 
     /// Validates the header's signature against the provided `PublicKey`.
