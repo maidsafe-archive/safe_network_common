@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["XOR_NAME_BITS","Constant bit length of `XorName`."],["XOR_NAME_LEN","Constant byte length of `XorName`."]],"enum":[["XorNameFromHexError","Errors that can occur when decoding a `XorName` from a string."]],"struct":[["XorName","A `XOR_NAME_BITS`-bit number, viewed as a point in XOR space."]]});
