@@ -25,7 +25,7 @@ use messaging;
 use maidsafe_utilities::serialisation::serialise;
 use sodiumoxide::crypto::sign::{self, PublicKey, SecretKey, Signature};
 use super::{Error, MpidHeader};
-use xor_name::XorName;
+use routing::XorName;
 
 #[derive(PartialEq, Eq, Hash, Clone, RustcDecodable, RustcEncodable)]
 struct Detail {
@@ -130,8 +130,8 @@ impl Debug for MpidMessage {
 mod test {
     use super::*;
     use rand;
+    use routing::XorName;
     use sodiumoxide::crypto::sign;
-    use xor_name::XorName;
     use messaging;
 
     #[test]
@@ -163,7 +163,7 @@ mod test {
                                  recipient.clone(),
                                  body.clone(),
                                  &secret_key)
-                    .is_err());
+            .is_err());
         let _ = body.pop();
 
         // Check verify function with a valid and invalid key

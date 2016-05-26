@@ -39,11 +39,12 @@
 
 #![cfg_attr(feature="clippy", feature(plugin))]
 #![cfg_attr(feature="clippy", plugin(clippy))]
-#![cfg_attr(feature="clippy", deny(clippy, clippy_pedantic))]
+#![cfg_attr(feature="clippy", deny(clippy, unicode_not_nfc, wrong_pub_self_convention,
+                                   option_unwrap_used))]
 #![cfg_attr(feature="clippy", allow(use_debug))]
 
 extern crate rand;
-extern crate xor_name;
+extern crate routing;
 extern crate sodiumoxide;
 extern crate rustc_serialize;
 #[macro_use]
