@@ -15,9 +15,6 @@
 // Please review the Licences for the specific language governing permissions and limitations
 // relating to use of the SAFE Network Software.
 
-// use maidsafe_utilities::serialisation::serialise;
-// use sodiumoxide::crypto::hash::sha512;
-// use sodiumoxide::crypto::sign::{self, PublicKey, SecretKey, Signature};
 use super::{MpidHeader, MpidMessage};
 use routing::XorName;
 
