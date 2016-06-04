@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
 
     
     
@@ -43,10 +44,10 @@
 
     <section id='main' class="content struct">
 <h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>xml</a>::<wbr><a href='../index.html'>reader</a>::<wbr><a href='index.html'>config</a>::<wbr><a class='struct' href=''>ParserConfig</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-1594' class='srclink' href='../../../src/xml/reader/config.rs.html#7-53' title='goto source code'>[src]</a></span></h1>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-1559' class='srclink' href='../../../src/xml/reader/config.rs.html#7-53' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct ParserConfig {
     pub trim_whitespace: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>,
     pub whitespace_to_characters: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>,
@@ -59,7 +60,7 @@
 behavior of the parser.</p>
 </div><h2 class='fields'>Fields</h2>
 <table><tr class='stab '>
-                                  <td id='structfield.trim_whitespace'><code>trim_whitespace</code></td><td><div class='docblock'><p>Whether or not should whitespace be removed. Default is false.</p>
+                             <td id='structfield.trim_whitespace'><code>trim_whitespace</code></td><td><div class='docblock'><p>Whether or not should whitespace be removed. Default is false.</p>
 
 <p>When true, all standalone whitespace will be removed (this means no
 <code>Whitespace</code> events will ve emitted), and leading and trailing whitespace 
@@ -71,14 +72,14 @@ possible, however, only if <code>whitespace_to_characters</code> or
 <p>This option does not affect CDATA events, unless <code>cdata_to_characters</code>
 option is also set. In that case CDATA content will also be trimmed.</p>
 </div></td></tr><tr class='stab '>
-                                  <td id='structfield.whitespace_to_characters'><code>whitespace_to_characters</code></td><td><div class='docblock'><p>Whether or not should whitespace be converted to characters.
+                             <td id='structfield.whitespace_to_characters'><code>whitespace_to_characters</code></td><td><div class='docblock'><p>Whether or not should whitespace be converted to characters.
 Default is false.</p>
 
 <p>If true, instead of <code>Whitespace</code> events <code>Characters</code> events with the
 same content will be emitted. If <code>trim_whitespace</code> is also true, these
 events will be trimmed to nothing and, consequently, not emitted.</p>
 </div></td></tr><tr class='stab '>
-                                  <td id='structfield.cdata_to_characters'><code>cdata_to_characters</code></td><td><div class='docblock'><p>Whether or not should CDATA be converted to characters.
+                             <td id='structfield.cdata_to_characters'><code>cdata_to_characters</code></td><td><div class='docblock'><p>Whether or not should CDATA be converted to characters.
 Default is false.</p>
 
 <p>If true, instead of <code>CData</code> events <code>Characters</code> events with the same
@@ -86,11 +87,11 @@ content will be emitted. If <code>trim_whitespace</code> is also true, these eve
 will be trimmed. If corresponding CDATA contained nothing but whitespace,
 this event will be omitted from the stream.</p>
 </div></td></tr><tr class='stab '>
-                                  <td id='structfield.ignore_comments'><code>ignore_comments</code></td><td><div class='docblock'><p>Whether or not should comments be omitted. Default is true.</p>
+                             <td id='structfield.ignore_comments'><code>ignore_comments</code></td><td><div class='docblock'><p>Whether or not should comments be omitted. Default is true.</p>
 
 <p>If true, <code>Comment</code> events will not be emitted at all.</p>
 </div></td></tr><tr class='stab '>
-                                  <td id='structfield.coalesce_characters'><code>coalesce_characters</code></td><td><div class='docblock'><p>Whether or not should sequential <code>Characters</code> events be merged.
+                             <td id='structfield.coalesce_characters'><code>coalesce_characters</code></td><td><div class='docblock'><p>Whether or not should sequential <code>Characters</code> events be merged.
 Default is true.</p>
 
 <p>If true, multiple sequential <code>Characters</code> events will be merged into

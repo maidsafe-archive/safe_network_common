@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
 
     
     
@@ -43,10 +44,10 @@
 
     <section id='main' class="content enum">
 <h1 class='fqn'><span class='in-band'>Enum <a href='../../index.html'>xml</a>::<wbr><a href='../index.html'>writer</a>::<wbr><a href='index.html'>events</a>::<wbr><a class='enum' href=''>XmlEvent</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-2360' class='srclink' href='../../../src/xml/writer/events.rs.html#10-91' title='goto source code'>[src]</a></span></h1>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-2325' class='srclink' href='../../../src/xml/writer/events.rs.html#10-91' title='goto source code'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum XmlEvent&lt;'a&gt; {
     StartDocument {
         version: <a class='enum' href='../../../xml/common/enum.XmlVersion.html' title='xml::common::XmlVersion'>XmlVersion</a>,
@@ -79,7 +80,7 @@ elements of an XML document.</p>
 at all, default XML declaration will be outputted.</p>
 </div><h3 class='fields'>Fields</h3>
 
-                                              <table><tr><td id='variant.StartDocument.field.version'><code>version</code></td><td><div class='docblock'><p>XML version.</p>
+                           <table><tr><td id='variant.StartDocument.field.version'><code>version</code></td><td><div class='docblock'><p>XML version.</p>
 
 <p>If XML declaration is not present, defaults to <code>Version10</code>.</p>
 </div></td></tr><tr><td id='variant.StartDocument.field.encoding'><code>encoding</code></td><td><div class='docblock'><p>XML document encoding.</p>
@@ -90,7 +91,7 @@ at all, default XML declaration will be outputted.</p>
 is up to the application to process them.</p>
 </div><h3 class='fields'>Fields</h3>
 
-                                              <table><tr><td id='variant.ProcessingInstruction.field.name'><code>name</code></td><td><div class='docblock'><p>Processing instruction target.</p>
+                           <table><tr><td id='variant.ProcessingInstruction.field.name'><code>name</code></td><td><div class='docblock'><p>Processing instruction target.</p>
 </div></td></tr><tr><td id='variant.ProcessingInstruction.field.data'><code>data</code></td><td><div class='docblock'><p>Processing instruction content.</p>
 </div></td></tr></table></td><td></td></tr><tr><td id='variant.StartElement'><code>StartElement</code></td><td><div class='docblock'><p>Denotes a beginning of an XML element.</p>
 
@@ -101,7 +102,7 @@ latter case <code>EndElement</code> event immediately follows.</p>
 including internal strings.</p>
 </div><h3 class='fields'>Fields</h3>
 
-                                              <table><tr><td id='variant.StartElement.field.name'><code>name</code></td><td><div class='docblock'><p>Qualified name of the element.</p>
+                           <table><tr><td id='variant.StartElement.field.name'><code>name</code></td><td><div class='docblock'><p>Qualified name of the element.</p>
 </div></td></tr><tr><td id='variant.StartElement.field.attributes'><code>attributes</code></td><td><div class='docblock'><p>A list of attributes associated with the element.</p>
 
 <p>Currently attributes are not checked for duplicates (TODO).</p>
@@ -112,7 +113,7 @@ including internal strings.</p>
 latter case it is emitted immediately after corresponding <code>StartElement</code> event.</p>
 </div><h3 class='fields'>Fields</h3>
 
-                                              <table><tr><td id='variant.EndElement.field.name'><code>name</code></td><td><div class='docblock'><p>Qualified name of the element.</p>
+                           <table><tr><td id='variant.EndElement.field.name'><code>name</code></td><td><div class='docblock'><p>Qualified name of the element.</p>
 </div></td></tr></table></td><td></td></tr><tr><td id='variant.CData'><code>CData</code></td><td><div class='docblock'><p>Denotes CDATA content.</p>
 
 <p>This event contains unparsed data. No unescaping will be performed.</p>
