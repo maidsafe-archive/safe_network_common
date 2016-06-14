@@ -47,7 +47,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-0' class='srclink' href='../src/routing/lib.rs.html#18-227' title='goto source code'>[src]</a></span></h1>
+               </span><a id='src-0' class='srclink' href='../src/routing/lib.rs.html#18-226' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Client and node implementations for a resilient decentralised network.</p>
 
 <p>The network is based on the <a href="../kademlia_routing_table/index.html"><code>kademlia_routing_table</code></a> and uses the XOR metric to define the
@@ -87,7 +87,7 @@ bootstrap node for the client, and messages to and from the client will be route
 
 <span class='kw'>let</span> (<span class='ident'>sender</span>, <span class='ident'>_receiver</span>) <span class='op'>=</span> <span class='ident'>mpsc</span>::<span class='ident'>channel</span>::<span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>();
 <span class='kw'>let</span> <span class='ident'>full_id</span> <span class='op'>=</span> <span class='ident'>FullId</span>::<span class='ident'>new</span>(); <span class='comment'>// Generate new keys.</span>
-<span class='kw'>let</span> _ <span class='op'>=</span> <span class='ident'>Client</span>::<span class='ident'>new</span>(<span class='ident'>sender</span>, <span class='prelude-val'>Some</span>(<span class='ident'>full_id</span>.<span class='ident'>clone</span>()), <span class='boolval'>true</span>).<span class='ident'>unwrap</span>();
+<span class='kw'>let</span> _ <span class='op'>=</span> <span class='ident'>Client</span>::<span class='ident'>new</span>(<span class='ident'>sender</span>, <span class='prelude-val'>Some</span>(<span class='ident'>full_id</span>.<span class='ident'>clone</span>())).<span class='ident'>unwrap</span>();
 
 <span class='kw'>let</span> _ <span class='op'>=</span> <span class='ident'>full_id</span>.<span class='ident'>public_id</span>().<span class='ident'>name</span>();</pre>
 
@@ -102,9 +102,8 @@ bootstrap node for the client, and messages to and from the client will be route
 <span class='kw'>use</span> <span class='ident'>routing</span>::{<span class='ident'>Node</span>, <span class='ident'>Event</span>};
 
 <span class='kw'>let</span> (<span class='ident'>sender</span>, <span class='ident'>_receiver</span>) <span class='op'>=</span> <span class='ident'>mpsc</span>::<span class='ident'>channel</span>::<span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>();
-<span class='kw'>let</span> <span class='ident'>use_data_cache</span> <span class='op'>=</span> <span class='boolval'>true</span>;
 <span class='kw'>let</span> <span class='ident'>first_node</span> <span class='op'>=</span> <span class='boolval'>false</span>;
-<span class='kw'>let</span> _ <span class='op'>=</span> <span class='ident'>Node</span>::<span class='ident'>new</span>(<span class='ident'>sender</span>, <span class='ident'>use_data_cache</span>, <span class='ident'>first_node</span>).<span class='ident'>unwrap</span>();</pre>
+<span class='kw'>let</span> _ <span class='op'>=</span> <span class='ident'>Node</span>::<span class='ident'>new</span>(<span class='ident'>sender</span>, <span class='ident'>first_node</span>).<span class='ident'>unwrap</span>();</pre>
 
 <p>Upon creation, the node will first connect to the network as a client. Once it has client
 status, it requests a new name from the network, and then integrates itself in the network with
@@ -312,6 +311,13 @@ routing node.</p>
                                   title='routing::MAX_STRUCTURED_DATA_SIZE_IN_BYTES'>MAX_STRUCTURED_DATA_SIZE_IN_BYTES</a></td>
                            <td class='docblock short'>
                                 <p>Maximum allowed size for a Structured Data to grow to</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='constant' href='constant.QUORUM_SIZE.html'
+                                  title='routing::QUORUM_SIZE'>QUORUM_SIZE</a></td>
+                           <td class='docblock short'>
+                                <p>The quorum for group consensus.</p>
                            </td>
                        </tr>
                        <tr class=' module-item'>

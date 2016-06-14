@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.21.0/src/lib.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.22.0/src/lib.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>lib.rs.html -- source</title>
@@ -268,7 +268,6 @@
 <span id="224">224</span>
 <span id="225">225</span>
 <span id="226">226</span>
-<span id="227">227</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 MaidSafe.net limited.</span>
 <span class='comment'>//</span>
@@ -333,7 +332,7 @@
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! let (sender, _receiver) = mpsc::channel::&lt;Event&gt;();</span>
 <span class='doccomment'>//! let full_id = FullId::new(); // Generate new keys.</span>
-<span class='doccomment'>//! let _ = Client::new(sender, Some(full_id.clone()), true).unwrap();</span>
+<span class='doccomment'>//! let _ = Client::new(sender, Some(full_id.clone())).unwrap();</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! let _ = full_id.public_id().name();</span>
 <span class='doccomment'>//! ```</span>
@@ -351,9 +350,8 @@
 <span class='doccomment'>//! use routing::{Node, Event};</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! let (sender, _receiver) = mpsc::channel::&lt;Event&gt;();</span>
-<span class='doccomment'>//! let use_data_cache = true;</span>
 <span class='doccomment'>//! let first_node = false;</span>
-<span class='doccomment'>//! let _ = Node::new(sender, use_data_cache, first_node).unwrap();</span>
+<span class='doccomment'>//! let _ = Node::new(sender, first_node).unwrap();</span>
 <span class='doccomment'>//! ```</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! Upon creation, the node will first connect to the network as a client. Once it has client</span>
@@ -449,7 +447,6 @@
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>itertools</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>lru_time_cache</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>kademlia_routing_table</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>message_filter</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rand</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rustc_serialize</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>sodiumoxide</span>;
@@ -464,6 +461,7 @@
 <span class='kw'>mod</span> <span class='ident'>event</span>;
 <span class='kw'>mod</span> <span class='ident'>id</span>;
 <span class='kw'>mod</span> <span class='ident'>immutable_data</span>;
+<span class='kw'>mod</span> <span class='ident'>message_filter</span>;
 <span class='kw'>mod</span> <span class='ident'>messages</span>;
 <span class='kw'>mod</span> <span class='ident'>node</span>;
 <span class='kw'>mod</span> <span class='ident'>peer_manager</span>;
@@ -485,7 +483,7 @@
 
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>authority</span>::<span class='ident'>Authority</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>client</span>::<span class='ident'>Client</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>core</span>::<span class='ident'>GROUP_SIZE</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>core</span>::{<span class='ident'>GROUP_SIZE</span>, <span class='ident'>QUORUM_SIZE</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>data</span>::{<span class='ident'>Data</span>, <span class='ident'>DataIdentifier</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>error</span>::{<span class='ident'>InterfaceError</span>, <span class='ident'>RoutingError</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>event</span>::<span class='ident'>Event</span>;

@@ -47,12 +47,17 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-4780' class='srclink' href='../src/routing/messages.rs.html#449-497' title='goto source code'>[src]</a></span></h1>
+               </span><a id='src-5246' class='srclink' href='../src/routing/messages.rs.html#556-620' title='goto source code'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum Response {
     GetSuccess(<a class='enum' href='../routing/enum.Data.html' title='routing::Data'>Data</a>, <a class='struct' href='../routing/struct.MessageId.html' title='routing::MessageId'>MessageId</a>),
     PutSuccess(<a class='enum' href='../routing/enum.DataIdentifier.html' title='routing::DataIdentifier'>DataIdentifier</a>, <a class='struct' href='../routing/struct.MessageId.html' title='routing::MessageId'>MessageId</a>),
     PostSuccess(<a class='enum' href='../routing/enum.DataIdentifier.html' title='routing::DataIdentifier'>DataIdentifier</a>, <a class='struct' href='../routing/struct.MessageId.html' title='routing::MessageId'>MessageId</a>),
     DeleteSuccess(<a class='enum' href='../routing/enum.DataIdentifier.html' title='routing::DataIdentifier'>DataIdentifier</a>, <a class='struct' href='../routing/struct.MessageId.html' title='routing::MessageId'>MessageId</a>),
+    GetAccountInfoSuccess {
+        id: <a class='struct' href='../routing/struct.MessageId.html' title='routing::MessageId'>MessageId</a>,
+        data_stored: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u64.html'>u64</a>,
+        space_available: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u64.html'>u64</a>,
+    },
     GetFailure {
         id: <a class='struct' href='../routing/struct.MessageId.html' title='routing::MessageId'>MessageId</a>,
         data_id: <a class='enum' href='../routing/enum.DataIdentifier.html' title='routing::DataIdentifier'>DataIdentifier</a>,
@@ -73,6 +78,10 @@
         data_id: <a class='enum' href='../routing/enum.DataIdentifier.html' title='routing::DataIdentifier'>DataIdentifier</a>,
         external_error_indicator: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>&gt;,
     },
+    GetAccountInfoFailure {
+        id: <a class='struct' href='../routing/struct.MessageId.html' title='routing::MessageId'>MessageId</a>,
+        external_error_indicator: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>&gt;,
+    },
 }</pre><div class='docblock'><p>Response message types</p>
 </div><h2 class='variants'>Variants</h2>
 <table class='variants_table'><tr><td id='variant.GetSuccess'><code>GetSuccess</code></td><td><div class='docblock'><p>Reply with the requested data (may not be ignored)</p>
@@ -80,9 +89,15 @@
 <p>Sent from a <code>ManagedNode</code> to an <code>NaeManager</code>, and from there to a <code>Client</code>, although this
 may be shortcut if the data is in a node&#39;s cache.</p>
 </div></td><td></td></tr><tr><td id='variant.PutSuccess'><code>PutSuccess</code></td><td><div class='docblock'><p>Success token for Put (may be ignored)</p>
-</div></td><td></td></tr><tr><td id='variant.PostSuccess'><code>PostSuccess</code></td><td><div class='docblock'><p>Success token for Post  (may be ignored)</p>
-</div></td><td></td></tr><tr><td id='variant.DeleteSuccess'><code>DeleteSuccess</code></td><td><div class='docblock'><p>Success token for delete  (may be ignored)</p>
-</div></td><td></td></tr><tr><td id='variant.GetFailure'><code>GetFailure</code></td><td><div class='docblock'><p>Error for <code>Get</code>, includes signed request to prevent injection attacks</p>
+</div></td><td></td></tr><tr><td id='variant.PostSuccess'><code>PostSuccess</code></td><td><div class='docblock'><p>Success token for Post (may be ignored)</p>
+</div></td><td></td></tr><tr><td id='variant.DeleteSuccess'><code>DeleteSuccess</code></td><td><div class='docblock'><p>Success token for delete (may be ignored)</p>
+</div></td><td></td></tr><tr><td id='variant.GetAccountInfoSuccess'><code>GetAccountInfoSuccess</code></td><td><div class='docblock'><p>Response containing account information for requested Client account</p>
+</div><h3 class='fields'>Fields</h3>
+
+                           <table><tr><td id='variant.GetAccountInfoSuccess.field.id'><code>id</code></td><td><div class='docblock'><p>Unique message identifier</p>
+</div></td></tr><tr><td id='variant.GetAccountInfoSuccess.field.data_stored'><code>data_stored</code></td><td><div class='docblock'><p>Amount of data stored on the network by this Client</p>
+</div></td></tr><tr><td id='variant.GetAccountInfoSuccess.field.space_available'><code>space_available</code></td><td><div class='docblock'><p>Amount of network space available to this Client</p>
+</div></td></tr></table></td><td></td></tr><tr><td id='variant.GetFailure'><code>GetFailure</code></td><td><div class='docblock'><p>Error for <code>Get</code>, includes signed request to prevent injection attacks</p>
 </div><h3 class='fields'>Fields</h3>
 
                            <table><tr><td id='variant.GetFailure.field.id'><code>id</code></td><td><div class='docblock'><p>Unique message identifier</p>
@@ -106,6 +121,11 @@ may be shortcut if the data is in a node&#39;s cache.</p>
                            <table><tr><td id='variant.DeleteFailure.field.id'><code>id</code></td><td><div class='docblock'><p>Unique message identifier</p>
 </div></td></tr><tr><td id='variant.DeleteFailure.field.data_id'><code>data_id</code></td><td><div class='docblock'><p>ID of the affected data chunk</p>
 </div></td></tr><tr><td id='variant.DeleteFailure.field.external_error_indicator'><code>external_error_indicator</code></td><td><div class='docblock'><p>Error type sent back, may be injected from upper layers</p>
+</div></td></tr></table></td><td></td></tr><tr><td id='variant.GetAccountInfoFailure'><code>GetAccountInfoFailure</code></td><td><div class='docblock'><p>Error for <code>GetAccountInfo</code></p>
+</div><h3 class='fields'>Fields</h3>
+
+                           <table><tr><td id='variant.GetAccountInfoFailure.field.id'><code>id</code></td><td><div class='docblock'><p>Unique message identifier</p>
+</div></td></tr><tr><td id='variant.GetAccountInfoFailure.field.external_error_indicator'><code>external_error_indicator</code></td><td><div class='docblock'><p>Error type sent back, may be injected from upper layers</p>
 </div></td></tr></table></td><td></td></tr></table><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl <a class='enum' href='../routing/enum.Response.html' title='routing::Response'>Response</a></code></h3><div class='impl-items'><h4 id='method.priority' class='method'><code>fn <a href='#method.priority' class='fnname'>priority</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a></code></h4>
 <div class='docblock'><p>The priority Crust should send this message with.</p>
 </div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='enum' href='../routing/enum.Response.html' title='routing::Response'>Response</a></code></h3><div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, formatter: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>

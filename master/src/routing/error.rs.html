@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.21.0/src/error.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.22.0/src/error.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>error.rs.html -- source</title>
@@ -187,6 +187,16 @@
 <span id="143">143</span>
 <span id="144">144</span>
 <span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 MaidSafe.net limited.</span>
 <span class='comment'>//</span>
@@ -207,9 +217,9 @@
 
 <span class='kw'>use</span> <span class='ident'>action</span>::<span class='ident'>Action</span>;
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>))]</span>
-<span class='kw'>use</span> <span class='ident'>crust</span>::<span class='ident'>PeerId</span>;
+<span class='kw'>use</span> <span class='ident'>crust</span>::{<span class='self'>self</span>, <span class='ident'>PeerId</span>};
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
-<span class='kw'>use</span> <span class='ident'>mock_crust</span>::<span class='ident'>crust</span>::<span class='ident'>PeerId</span>;
+<span class='kw'>use</span> <span class='ident'>mock_crust</span>::<span class='ident'>crust</span>::{<span class='self'>self</span>, <span class='ident'>PeerId</span>};
 <span class='kw'>use</span> <span class='ident'>event</span>::<span class='ident'>Event</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>sync</span>::<span class='ident'>mpsc</span>::{<span class='ident'>RecvError</span>, <span class='ident'>SendError</span>};
 <span class='kw'>use</span> <span class='ident'>maidsafe_utilities</span>::<span class='ident'>event_sender</span>::{<span class='ident'>EventSenderError</span>, <span class='ident'>MaidSafeEventCategory</span>};
@@ -270,14 +280,16 @@
     <span class='doccomment'>/// Rejected providing the close group, because the destination address does not match any of</span>
     <span class='doccomment'>/// the sender&#39;s buckets</span>
     <span class='ident'>RejectedGetCloseGroup</span>,
-    <span class='doccomment'>/// A client with `client_restriction == true` tried to relocate.</span>
-    <span class='ident'>RejectedGetNodeName</span>,
+    <span class='doccomment'>/// A client with `client_restriction == true` tried to send a message restricted to nodes.</span>
+    <span class='ident'>RejectedClientMessage</span>,
     <span class='doccomment'>/// String errors</span>
     <span class='ident'>Utf8</span>(::<span class='ident'>std</span>::<span class='ident'>str</span>::<span class='ident'>Utf8Error</span>),
     <span class='doccomment'>/// Interface error</span>
     <span class='ident'>Interface</span>(<span class='ident'>InterfaceError</span>),
     <span class='doccomment'>/// i/o error</span>
     <span class='ident'>Io</span>(::<span class='ident'>std</span>::<span class='ident'>io</span>::<span class='ident'>Error</span>),
+    <span class='doccomment'>/// Crust error</span>
+    <span class='ident'>Crust</span>(<span class='ident'>crust</span>::<span class='ident'>CrustError</span>),
     <span class='doccomment'>/// Channel sending error</span>
     <span class='ident'>SendEventError</span>(<span class='ident'>SendError</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>),
     <span class='doccomment'>/// Current state is invalid for the operation</span>
@@ -302,6 +314,8 @@
     <span class='ident'>InvalidSource</span>,
     <span class='doccomment'>/// Attempted to use a node as a tunnel that is not directly connected</span>
     <span class='ident'>CannotTunnelThroughTunnel</span>,
+    <span class='doccomment'>/// Decoded a user message with an unexpected hash.</span>
+    <span class='ident'>HashMismatch</span>,
 }
 
 <span class='kw'>impl</span> <span class='ident'>From</span><span class='op'>&lt;</span>::<span class='ident'>std</span>::<span class='ident'>str</span>::<span class='ident'>Utf8Error</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>RoutingError</span> {
@@ -319,6 +333,12 @@
 <span class='kw'>impl</span> <span class='ident'>From</span><span class='op'>&lt;</span><span class='ident'>InterfaceError</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>RoutingError</span> {
     <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>error</span>: <span class='ident'>InterfaceError</span>) <span class='op'>-&gt;</span> <span class='ident'>RoutingError</span> {
         <span class='ident'>RoutingError</span>::<span class='ident'>Interface</span>(<span class='ident'>error</span>)
+    }
+}
+
+<span class='kw'>impl</span> <span class='ident'>From</span><span class='op'>&lt;</span><span class='ident'>crust</span>::<span class='ident'>CrustError</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>RoutingError</span> {
+    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>error</span>: <span class='ident'>crust</span>::<span class='ident'>CrustError</span>) <span class='op'>-&gt;</span> <span class='ident'>RoutingError</span> {
+        <span class='ident'>RoutingError</span>::<span class='ident'>Crust</span>(<span class='ident'>error</span>)
     }
 }
 

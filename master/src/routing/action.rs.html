@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.21.0/src/action.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.22.0/src/action.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>action.rs.html -- source</title>
@@ -119,6 +119,10 @@
 <span id="75">75</span>
 <span id="76">76</span>
 <span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 MaidSafe.net limited.</span>
 <span class='comment'>//</span>
@@ -141,7 +145,7 @@
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>sync</span>::<span class='ident'>mpsc</span>::<span class='ident'>Sender</span>;
 <span class='kw'>use</span> <span class='ident'>authority</span>::<span class='ident'>Authority</span>;
 <span class='kw'>use</span> <span class='ident'>error</span>::<span class='ident'>InterfaceError</span>;
-<span class='kw'>use</span> <span class='ident'>messages</span>::{<span class='ident'>Request</span>, <span class='ident'>RoutingMessage</span>};
+<span class='kw'>use</span> <span class='ident'>messages</span>::{<span class='ident'>Request</span>, <span class='ident'>UserMessage</span>};
 <span class='kw'>use</span> <span class='ident'>xor_name</span>::<span class='ident'>XorName</span>;
 
 <span class='doccomment'>/// An Action initiates a message flow &lt; A | B &gt; where we are (a part of) A.</span>
@@ -153,12 +157,16 @@
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Action</span> {
     <span class='ident'>NodeSendMessage</span> {
-        <span class='ident'>content</span>: <span class='ident'>RoutingMessage</span>,
+        <span class='ident'>src</span>: <span class='ident'>Authority</span>,
+        <span class='ident'>dst</span>: <span class='ident'>Authority</span>,
+        <span class='ident'>content</span>: <span class='ident'>UserMessage</span>,
+        <span class='ident'>priority</span>: <span class='ident'>u8</span>,
         <span class='ident'>result_tx</span>: <span class='ident'>Sender</span><span class='op'>&lt;</span><span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>InterfaceError</span><span class='op'>&gt;&gt;</span>,
     },
     <span class='ident'>ClientSendRequest</span> {
         <span class='ident'>content</span>: <span class='ident'>Request</span>,
         <span class='ident'>dst</span>: <span class='ident'>Authority</span>,
+        <span class='ident'>priority</span>: <span class='ident'>u8</span>,
         <span class='ident'>result_tx</span>: <span class='ident'>Sender</span><span class='op'>&lt;</span><span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>InterfaceError</span><span class='op'>&gt;&gt;</span>,
     },
     <span class='ident'>CloseGroup</span> {
