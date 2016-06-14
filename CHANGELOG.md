@@ -1,5 +1,8 @@
 # Safe Network Common - Change Log
 
+## [0.3.0]
+- Migrate to Routing 0.22.0.
+
 ## [0.2.0]
 - Depend on routing and reduce the `XorName` size to 256 bit.
 - Errors implement `std::Error`.
