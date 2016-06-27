@@ -11,8 +11,8 @@ version = "0.3.0"
 
 [dependencies]
 clippy = {version = "~0.0.76", optional = true}
-maidsafe_utilities = "~0.6.0"
+maidsafe_utilities = "~0.8.0"
 rand = "~0.3.14"
 rustc-serialize = "~0.3.19"
 sodiumoxide = "~0.0.10"
-routing = "~0.22.0"
+routing = "~0.23.0"
