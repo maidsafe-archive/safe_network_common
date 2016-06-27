@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/crust-0.15.0/src/lib.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/crust-0.16.0/src/lib.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>lib.rs.html -- source</title>
@@ -128,7 +128,6 @@
 <span id="84">84</span>
 <span id="85">85</span>
 <span id="86">86</span>
-<span id="87">87</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2016 MaidSafe.net limited.</span>
 <span class='comment'>//</span>
@@ -176,28 +175,28 @@
 <span class='comment'>// TODO: Fix these lints and remove these exceptions.</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;clippy&quot;</span>, <span class='ident'>allow</span>(<span class='ident'>cyclomatic_complexity</span>, <span class='ident'>single_match</span>, <span class='ident'>too_many_arguments</span>))]</span>
 
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>byteorder</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>config_file_handler</span>;
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>log</span>;
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>maidsafe_utilities</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>tmp_mio</span> <span class='kw'>as</span> <span class='ident'>mio</span>;
+<span class='attribute'>#[<span class='ident'>allow</span>(<span class='ident'>unused_extern_crates</span>)]</span>
+<span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>quick_error</span>;
+
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>byteorder</span>;
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>c_linked_list</span>;
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>config_file_handler</span>;
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>crossbeam</span>;
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>igd</span>;
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>libc</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>net2</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rand</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rustc_serialize</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>sodiumoxide</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>socket_addr</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>get_if_addrs</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>crossbeam</span>;
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>igd</span>;
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>tmp_mio</span> <span class='kw'>as</span> <span class='ident'>mio</span>;
 
-<span class='comment'>// Needed because the crate is only used for macros</span>
-<span class='attribute'>#[<span class='ident'>allow</span>(<span class='ident'>unused_extern_crates</span>)]</span>
-<span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>quick_error</span>;
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>void</span>;
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>windows</span>)]</span>
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>winapi</span>;
 
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
@@ -208,14 +207,13 @@
 <span class='kw'>mod</span> <span class='ident'>service_discovery</span>;
 <span class='kw'>mod</span> <span class='ident'>nat</span>;
 
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>common</span>::{<span class='ident'>MSG_DROP_PRIORITY</span>, <span class='ident'>Priority</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>main</span>::{<span class='ident'>ConnectionInfoResult</span>, <span class='ident'>CrustError</span>, <span class='ident'>Event</span>, <span class='ident'>PeerId</span>, <span class='ident'>PrivConnectionInfo</span>,
                <span class='ident'>PubConnectionInfo</span>, <span class='ident'>Service</span>};
 
-<span class='doccomment'>/// Crust Observers will be informed of crust events on this</span>
+<span class='doccomment'>/// Used to receive events from a `Service`.</span>
 <span class='kw'>pub</span> <span class='kw'>type</span> <span class='ident'>CrustEventSender</span> <span class='op'>=</span> ::<span class='ident'>maidsafe_utilities</span>::<span class='ident'>event_sender</span>::<span class='ident'>MaidSafeObserver</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>;
-<span class='doccomment'>/// Allowed max `data_len` for read/write is 2MB</span>
-<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>MAX_PAYLOAD_SIZE</span>: <span class='ident'>usize</span> <span class='op'>=</span> <span class='number'>2</span> <span class='op'>*</span> <span class='number'>1024</span> <span class='op'>*</span> <span class='number'>1024</span>;
-<span class='doccomment'>/// Crust result type</span>
+<span class='doccomment'>/// Crust&#39;s result type</span>
 <span class='kw'>pub</span> <span class='kw'>type</span> <span class='ident'>Res</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>CrustError</span><span class='op'>&gt;</span>;
 </pre>
 </section>

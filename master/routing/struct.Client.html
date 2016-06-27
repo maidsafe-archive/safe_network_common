@@ -47,7 +47,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-430' class='srclink' href='../src/routing/client.rs.html#42-52' title='goto source code'>[src]</a></span></h1>
+               </span><a id='src-433' class='srclink' href='../src/routing/client.rs.html#45-55' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct Client {
     // some fields omitted
 }</pre><div class='docblock'><p>Interface for sending and receiving messages to and from a network of nodes in the role of a
@@ -76,6 +76,8 @@ exists to ensure that the client cannot choose its <code>ClientAuthority</code>.
 <div class='docblock'><p>Remove something from the network</p>
 </div><h4 id='method.send_get_account_info_request' class='method'><code>fn <a href='#method.send_get_account_info_request' class='fnname'>send_get_account_info_request</a>(&amp;mut self, dst: <a class='enum' href='../routing/enum.Authority.html' title='routing::Authority'>Authority</a>, message_id: <a class='struct' href='../routing/struct.MessageId.html' title='routing::MessageId'>MessageId</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../routing/enum.InterfaceError.html' title='routing::InterfaceError'>InterfaceError</a>&gt;</code></h4>
 <div class='docblock'><p>Request account information for the Client calling this function</p>
+</div><h4 id='method.name' class='method'><code>fn <a href='#method.name' class='fnname'>name</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../routing/struct.XorName.html' title='routing::XorName'>XorName</a>, <a class='enum' href='../routing/enum.InterfaceError.html' title='routing::InterfaceError'>InterfaceError</a>&gt;</code></h4>
+<div class='docblock'><p>Returns the name of this node.</p>
 </div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='../routing/struct.Client.html' title='routing::Client'>Client</a></code></h3><div class='impl-items'><h4 id='method.drop' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop' class='fnname'>drop</a>(&amp;mut self)</code></h4>
 </div></section>
     <section id='search' class="content hidden"></section>

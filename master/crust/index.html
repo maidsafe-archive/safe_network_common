@@ -47,7 +47,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-0' class='srclink' href='../src/crust/lib.rs.html#18-87' title='goto source code'>[src]</a></span></h1>
+               </span><a id='src-0' class='srclink' href='../src/crust/lib.rs.html#18-86' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'>
 <h1 id='crust' class='section-header'><a href='#crust'>crust</a></h1>
 <p>Reliable peer-to-peer network connections in Rust with NAT traversal.</p>
@@ -85,7 +85,8 @@
                            <td><a class='struct' href='struct.Service.html'
                                   title='crust::Service'>Service</a></td>
                            <td class='docblock short'>
-                                <p>A structure representing a connection manager.</p>
+                                <p>A structure representing a connection manager. This is the main object through which crust is
+used.</p>
                            </td>
                        </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
 <table>
@@ -106,10 +107,10 @@ of this module.</p>
                        </tr></table><h2 id='constants' class='section-header'><a href="#constants">Constants</a></h2>
 <table>
                        <tr class=' module-item'>
-                           <td><a class='constant' href='constant.MAX_PAYLOAD_SIZE.html'
-                                  title='crust::MAX_PAYLOAD_SIZE'>MAX_PAYLOAD_SIZE</a></td>
+                           <td><a class='constant' href='constant.MSG_DROP_PRIORITY.html'
+                                  title='crust::MSG_DROP_PRIORITY'>MSG_DROP_PRIORITY</a></td>
                            <td class='docblock short'>
-                                <p>Allowed max <code>data_len</code> for read/write is 2MB</p>
+                                <p>Minimum priority for droppable messages. Messages with lower values will never be dropped.</p>
                            </td>
                        </tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
 <table>
@@ -117,14 +118,24 @@ of this module.</p>
                            <td><a class='type' href='type.CrustEventSender.html'
                                   title='crust::CrustEventSender'>CrustEventSender</a></td>
                            <td class='docblock short'>
-                                <p>Crust Observers will be informed of crust events on this</p>
+                                <p>Used to receive events from a <code>Service</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='type' href='type.Priority.html'
+                                  title='crust::Priority'>Priority</a></td>
+                           <td class='docblock short'>
+                                <p>Priority of a message to be sent by Crust. A lower value means a higher priority, so Priority 0
+is the highest one. Low-priority messages will be preempted if need be to allow higher priority
+messages through. Messages with a value <code>&gt;= MSG_DROP_PRIORITY</code> will even be dropped, if
+bandwidth is insufficient.</p>
                            </td>
                        </tr>
                        <tr class=' module-item'>
                            <td><a class='type' href='type.Res.html'
                                   title='crust::Res'>Res</a></td>
                            <td class='docblock short'>
-                                <p>Crust result type</p>
+                                <p>Crust&#39;s result type</p>
                            </td>
                        </tr></table></section>
     <section id='search' class="content hidden"></section>

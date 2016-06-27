@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.22.0/src/structured_data.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.23.0/src/structured_data.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>structured_data.rs.html -- source</title>
@@ -547,6 +547,7 @@
 <span id="503">503</span>
 <span id="504">504</span>
 <span id="505">505</span>
+<span id="506">506</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 MaidSafe.net limited.</span>
 <span class='comment'>//</span>
@@ -952,13 +953,13 @@
                                          <span class='prelude-val'>None</span>) {
             <span class='prelude-val'>Ok</span>(<span class='kw-2'>mut</span> <span class='ident'>structured_data</span>) <span class='op'>=&gt;</span> {
                 <span class='comment'>// After one signature, one more is required to reach majority.</span>
-                <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>add_signature</span>(<span class='kw-2'>&amp;</span><span class='ident'>keys1</span>.<span class='number'>1</span>).<span class='ident'>unwrap</span>(), <span class='number'>1</span>);
+                <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='macro'>unwrap</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>add_signature</span>(<span class='kw-2'>&amp;</span><span class='ident'>keys1</span>.<span class='number'>1</span>)), <span class='number'>1</span>);
                 <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>verify_previous_owner_signatures</span>(<span class='kw-2'>&amp;</span><span class='ident'>owner_keys</span>).<span class='ident'>is_err</span>());
                 <span class='comment'>// Two out of three is enough.</span>
-                <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>add_signature</span>(<span class='kw-2'>&amp;</span><span class='ident'>keys2</span>.<span class='number'>1</span>).<span class='ident'>unwrap</span>(), <span class='number'>0</span>);
+                <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='macro'>unwrap</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>add_signature</span>(<span class='kw-2'>&amp;</span><span class='ident'>keys2</span>.<span class='number'>1</span>)), <span class='number'>0</span>);
                 <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>verify_previous_owner_signatures</span>(<span class='kw-2'>&amp;</span><span class='ident'>owner_keys</span>).<span class='ident'>is_ok</span>());
                 <span class='comment'>// Three out of three is also fine.</span>
-                <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>add_signature</span>(<span class='kw-2'>&amp;</span><span class='ident'>keys3</span>.<span class='number'>1</span>).<span class='ident'>unwrap</span>(), <span class='number'>0</span>);
+                <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='macro'>unwrap</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>add_signature</span>(<span class='kw-2'>&amp;</span><span class='ident'>keys3</span>.<span class='number'>1</span>)), <span class='number'>0</span>);
                 <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>verify_previous_owner_signatures</span>(<span class='kw-2'>&amp;</span><span class='ident'>owner_keys</span>).<span class='ident'>is_ok</span>());
             }
             <span class='prelude-val'>Err</span>(<span class='ident'>error</span>) <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;Error: {:?}&quot;</span>, <span class='ident'>error</span>),
@@ -983,13 +984,13 @@
                                          <span class='prelude-val'>Some</span>(<span class='kw-2'>&amp;</span><span class='ident'>keys1</span>.<span class='number'>1</span>)) {
             <span class='prelude-val'>Ok</span>(<span class='kw-2'>mut</span> <span class='ident'>structured_data</span>) <span class='op'>=&gt;</span> {
                 <span class='comment'>// Two signatures are not enough because they don&#39;t have a strict majority.</span>
-                <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>add_signature</span>(<span class='kw-2'>&amp;</span><span class='ident'>keys2</span>.<span class='number'>1</span>).<span class='ident'>unwrap</span>(), <span class='number'>1</span>);
+                <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='macro'>unwrap</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>add_signature</span>(<span class='kw-2'>&amp;</span><span class='ident'>keys2</span>.<span class='number'>1</span>)), <span class='number'>1</span>);
                 <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>verify_previous_owner_signatures</span>(<span class='kw-2'>&amp;</span><span class='ident'>owner_keys</span>).<span class='ident'>is_ok</span>());
                 <span class='comment'>// Three out of four is enough.</span>
-                <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>add_signature</span>(<span class='kw-2'>&amp;</span><span class='ident'>keys3</span>.<span class='number'>1</span>).<span class='ident'>unwrap</span>(), <span class='number'>0</span>);
+                <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='macro'>unwrap</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>add_signature</span>(<span class='kw-2'>&amp;</span><span class='ident'>keys3</span>.<span class='number'>1</span>)), <span class='number'>0</span>);
                 <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>verify_previous_owner_signatures</span>(<span class='kw-2'>&amp;</span><span class='ident'>owner_keys</span>).<span class='ident'>is_ok</span>());
                 <span class='comment'>// Four out of four is also fine.</span>
-                <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>add_signature</span>(<span class='kw-2'>&amp;</span><span class='ident'>keys4</span>.<span class='number'>1</span>).<span class='ident'>unwrap</span>(), <span class='number'>0</span>);
+                <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='macro'>unwrap</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>add_signature</span>(<span class='kw-2'>&amp;</span><span class='ident'>keys4</span>.<span class='number'>1</span>)), <span class='number'>0</span>);
                 <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>structured_data</span>.<span class='ident'>verify_previous_owner_signatures</span>(<span class='kw-2'>&amp;</span><span class='ident'>owner_keys</span>).<span class='ident'>is_ok</span>());
             }
             <span class='prelude-val'>Err</span>(<span class='ident'>error</span>) <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;Error: {:?}&quot;</span>, <span class='ident'>error</span>),
@@ -1038,7 +1039,8 @@
                                                          <span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>new_owner</span>.<span class='number'>0</span>],
                                                          <span class='prelude-val'>Some</span>(<span class='kw-2'>&amp;</span><span class='ident'>new_owner</span>.<span class='number'>1</span>)) {
                             <span class='prelude-val'>Ok</span>(<span class='ident'>another_new_structured_data</span>) <span class='op'>=&gt;</span> {
-                                <span class='kw'>match</span> <span class='ident'>orig_structured_data</span>.<span class='ident'>replace_with_other</span>(<span class='ident'>another_new_structured_data</span>) {
+                                <span class='kw'>match</span> <span class='ident'>orig_structured_data</span>.<span class='ident'>replace_with_other</span>(
+                                        <span class='ident'>another_new_structured_data</span>) {
                                     <span class='prelude-val'>Ok</span>(()) <span class='op'>=&gt;</span> (),
                                     <span class='prelude-val'>Err</span>(<span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;Error {:?}&quot;</span>, <span class='ident'>e</span>),
                                 }

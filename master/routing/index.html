@@ -47,7 +47,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-0' class='srclink' href='../src/routing/lib.rs.html#18-226' title='goto source code'>[src]</a></span></h1>
+               </span><a id='src-0' class='srclink' href='../src/routing/lib.rs.html#18-193' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Client and node implementations for a resilient decentralised network.</p>
 
 <p>The network is based on the <a href="../kademlia_routing_table/index.html"><code>kademlia_routing_table</code></a> and uses the XOR metric to define the
@@ -66,8 +66,7 @@ this provides redundancy and resilience: A node has no control over which group 
 will be a member of, and without a majority in the group it cannot forge a message from that
 group.</p>
 
-<p>The library also provides different types for the messages&#39; data. The data types are encoded
-with Concise Binary Object Representation (CBOR).</p>
+<p>The library also provides different types for the messages&#39; data.</p>
 
 <h1 id='usage' class='section-header'><a href='#usage'>Usage</a></h1>
 <p>A decentralised service based on the <code>routing</code> library uses <code>Client</code> to send requests to the
@@ -113,52 +112,6 @@ that new name, adding close nodes to its routing table.</p>
 The node can act as an individual node or as part of a group authority. Sending a message as a
 group authority only has an effect if sufficiently many other nodes in that authority send the
 same message.</p>
-
-<h2 id='example-put-message-flow-for-immutable-data' class='section-header'><a href='#example-put-message-flow-for-immutable-data'>Example: Put message flow for immutable data</a></h2>
-<p>An example implementation of a vault for storing and retrieving <code>ImmutableData</code> is included
-with the code of this library. The flow of a <code>Put</code> request there moves through the following
-authorities:</p>
-
-<ul>
-<li>A <code>Client</code> that wants to store a piece of data on the network.</li>
-<li>The <code>ClientManager</code> group authority that is responsible for that particular client. The nodes
-in this group have access to metadata about this client and can e. g. verify that it has
-required permissions or quota to store the data. The <code>ClientManager</code>&#39;s address is the <code>XorName</code>
-of the client itself, so it consists of the nodes closest to that name.</li>
-<li>The <code>NaeManager</code> group authority which is responsible for that particular piece of data and
-knows where in the network it should be stored. Its address is the <code>XorName</code> of the data.</li>
-<li>The <code>ManagedNode</code>s are the individual nodes that actually store the data. This could be just
-one, but let&#39;s assume that data is stored redundantly in more than one place.</li>
-</ul>
-
-<p>The message flow from the client to the managed nodes looks like this:</p>
-
-<ul>
-<li>The client sends a <code>Put</code> request to the <code>ClientManager</code>, i. e. the sender is the individual
-<code>Client</code> and the receiver is a group of nodes with addresses close to the client&#39;s name.</li>
-<li>Each node in the <code>ClientManager</code> group performs validation and updates metadata (which may
-involve further messages not considered in this example). If valid, it sends a <code>PutSuccess</code>
-response back to the client, and a <code>Put</code> request to the <code>NaeManager</code> with the data&#39;s <code>XorName</code>.
-In both cases, the sender is the <code>ClientManager</code>, not the individual node.</li>
-<li>Each node in the <code>NaeManager</code> chooses a number of individual nodes that are responsible for
-storing this specific piece of data. This needs to happen in a deterministic way so that the
-members of the <code>NaeManager</code> agree on the responsible nodes. Then they finally send a <code>Put</code>
-request to each of these. Here the sender is the <code>NaeManager</code>, but the recipient is the
-individual <code>ManagedNode</code>.</li>
-<li>Each <code>ManagedNode</code> locally stores the data.</li>
-</ul>
-
-<p>These steps need to be implemented by the user of the library. Each node needs to handle all
-these cases, as it can be simultaneously a <code>ManagedNode</code> and a member of several different
-<code>ClientManager</code>s and <code>NaeManager</code>s. A client, however, does not act as a node or vice versa.</p>
-
-<p>Transparently to the user, the <code>routing</code> library deals with message quora, so the user will only
-receive a message from a <code>Client</code> or <code>Node</code> if it was either sent</p>
-
-<ul>
-<li>by a client or individual node, or</li>
-<li>by a sufficient number of members of a group authority.</li>
-</ul>
 
 <h1 id='sequence-diagrams' class='section-header'><a href='#sequence-diagrams'>Sequence diagrams</a></h1>
 <ul>
@@ -332,6 +285,15 @@ routing node.</p>
                                   title='routing::XOR_NAME_LEN'>XOR_NAME_LEN</a></td>
                            <td class='docblock short'>
                                 <p>Constant byte length of <code>XorName</code>.</p>
+                           </td>
+                       </tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.Cache.html'
+                                  title='routing::Cache'>Cache</a></td>
+                           <td class='docblock short'>
+                                <p>A cache that stores <code>Response</code>s keyed by <code>Requests</code>. Should be implemented
+by layers above routing.</p>
                            </td>
                        </tr></table></section>
     <section id='search' class="content hidden"></section>
