@@ -30,6 +30,12 @@ pub enum GetError {
     NetworkOther(String),
 }
 
+impl<T: Into<String>> From<T> for GetError {
+    fn from(err: T) -> Self {
+        GetError::NetworkOther(err.into())
+    }
+}
+
 impl Display for GetError {
     fn fmt(&self, formatter: &mut Formatter) -> fmt::Result {
         match *self {
@@ -80,6 +86,12 @@ pub enum MutationError {
     NetworkOther(String),
 }
 
+impl<T: Into<String>> From<T> for MutationError {
+    fn from(err: T) -> Self {
+        MutationError::NetworkOther(err.into())
+    }
+}
+
 impl Display for MutationError {
     fn fmt(&self, formatter: &mut Formatter) -> fmt::Result {
         match *self {
@@ -119,6 +131,28 @@ impl Error for MutationError {
             MutationError::InvalidOperation => "Invalid operation",
             MutationError::NetworkFull => "Network full",
             MutationError::NetworkOther(ref error) => error,
+        }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn conversion_from_str_literal() {
+        fn mutate() -> Result<(), MutationError> {
+            try!(Err("Mutation"))
+        }
+
+        let err_get = GetError::from("Get");
+        let err_mutation = mutate().unwrap_err();
+        match (err_get, err_mutation) {
+            (GetError::NetworkOther(val0), MutationError::NetworkOther(val1)) => {
+                assert_eq!(&val0, "Get");
+                assert_eq!(&val1, "Mutation");
+            }
+            err => panic!("Unexpected conversion: {:?}", err),
         }
     }
 }
