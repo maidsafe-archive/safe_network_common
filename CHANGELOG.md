@@ -1,5 +1,8 @@
 # Safe Network Common - Change Log
 
+## [0.4.1]
+- Code a From trait to convert from anthing that can be converted to `String` via `Into` into either Get or Mutation Error.
+
 ## [0.4.0]
 - Migrate to Routing 0.23.0.
 - Migrate to maidsafe_utilities 0.8.0.
