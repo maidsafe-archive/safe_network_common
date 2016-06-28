@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.23.0/src/node.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.23.1/src/node.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>node.rs.html -- source</title>
@@ -520,6 +520,8 @@
 <span id="476">476</span>
 <span id="477">477</span>
 <span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 MaidSafe.net limited.</span>
 <span class='comment'>//</span>
@@ -596,9 +598,10 @@
 
     <span class='doccomment'>/// Create a new `Node` given a cache instance.</span>
     <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>))]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>with_cache</span>(<span class='ident'>event_sender</span>: <span class='ident'>Sender</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>, <span class='ident'>first_node</span>: <span class='ident'>bool</span>, <span class='ident'>cache</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Cache</span><span class='op'>&gt;</span>)
-                      <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Node</span>, <span class='ident'>RoutingError</span><span class='op'>&gt;</span>
-    {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>with_cache</span>(<span class='ident'>event_sender</span>: <span class='ident'>Sender</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>,
+                      <span class='ident'>first_node</span>: <span class='ident'>bool</span>,
+                      <span class='ident'>cache</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Cache</span><span class='op'>&gt;</span>)
+                      <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Node</span>, <span class='ident'>RoutingError</span><span class='op'>&gt;</span> {
         <span class='ident'>sodiumoxide</span>::<span class='ident'>init</span>();  <span class='comment'>// enable shared global (i.e. safe to multithread now)</span>
 
         <span class='kw'>let</span> <span class='ident'>role</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='ident'>first_node</span> {
@@ -631,9 +634,10 @@
 
     <span class='doccomment'>/// Create a new `Node` for unit testing.</span>
     <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>with_cache</span>(<span class='ident'>event_sender</span>: <span class='ident'>Sender</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>, <span class='ident'>first_node</span>: <span class='ident'>bool</span>, <span class='ident'>cache</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Cache</span><span class='op'>&gt;</span>)
-                      <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Node</span>, <span class='ident'>RoutingError</span><span class='op'>&gt;</span>
-    {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>with_cache</span>(<span class='ident'>event_sender</span>: <span class='ident'>Sender</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>,
+                      <span class='ident'>first_node</span>: <span class='ident'>bool</span>,
+                      <span class='ident'>cache</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Cache</span><span class='op'>&gt;</span>)
+                      <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Node</span>, <span class='ident'>RoutingError</span><span class='op'>&gt;</span> {
         <span class='kw'>let</span> <span class='ident'>role</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='ident'>first_node</span> {
             <span class='ident'>Role</span>::<span class='ident'>FirstNode</span>
         } <span class='kw'>else</span> {

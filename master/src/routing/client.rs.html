@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.23.0/src/client.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.23.1/src/client.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>client.rs.html -- source</title>
@@ -253,10 +253,6 @@
 <span id="209">209</span>
 <span id="210">210</span>
 <span id="211">211</span>
-<span id="212">212</span>
-<span id="213">213</span>
-<span id="214">214</span>
-<span id="215">215</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 MaidSafe.net limited.</span>
 <span class='comment'>//</span>
@@ -330,10 +326,8 @@
         <span class='ident'>sodiumoxide</span>::<span class='ident'>init</span>();  <span class='comment'>// enable shared global (i.e. safe to multithread now)</span>
 
         <span class='comment'>// start the handler for routing with a restriction to become a full node</span>
-        <span class='kw'>let</span> (<span class='ident'>action_sender</span>, <span class='kw-2'>mut</span> <span class='ident'>core</span>) <span class='op'>=</span> <span class='ident'>Core</span>::<span class='ident'>new</span>(<span class='ident'>event_sender</span>,
-                                                  <span class='ident'>Role</span>::<span class='ident'>Client</span>,
-                                                  <span class='ident'>keys</span>,
-                                                  <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>NullCache</span>));
+        <span class='kw'>let</span> (<span class='ident'>action_sender</span>, <span class='kw-2'>mut</span> <span class='ident'>core</span>) <span class='op'>=</span>
+            <span class='ident'>Core</span>::<span class='ident'>new</span>(<span class='ident'>event_sender</span>, <span class='ident'>Role</span>::<span class='ident'>Client</span>, <span class='ident'>keys</span>, <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>NullCache</span>));
         <span class='kw'>let</span> (<span class='ident'>tx</span>, <span class='ident'>rx</span>) <span class='op'>=</span> <span class='ident'>channel</span>();
 
         <span class='kw'>let</span> <span class='ident'>raii_joiner</span> <span class='op'>=</span> <span class='ident'>RaiiThreadJoiner</span>::<span class='ident'>new</span>(<span class='macro'>thread</span><span class='macro'>!</span>(<span class='string'>&quot;Client thread&quot;</span>, <span class='kw'>move</span> <span class='op'>||</span> {
@@ -352,10 +346,8 @@
     <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>event_sender</span>: <span class='ident'>Sender</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>, <span class='ident'>keys</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>FullId</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Client</span>, <span class='ident'>RoutingError</span><span class='op'>&gt;</span> {
         <span class='comment'>// start the handler for routing with a restriction to become a full node</span>
-        <span class='kw'>let</span> (<span class='ident'>action_sender</span>, <span class='ident'>core</span>) <span class='op'>=</span> <span class='ident'>Core</span>::<span class='ident'>new</span>(<span class='ident'>event_sender</span>,
-                                              <span class='ident'>Role</span>::<span class='ident'>Client</span>,
-                                              <span class='ident'>keys</span>,
-                                              <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>NullCache</span>));
+        <span class='kw'>let</span> (<span class='ident'>action_sender</span>, <span class='ident'>core</span>) <span class='op'>=</span>
+            <span class='ident'>Core</span>::<span class='ident'>new</span>(<span class='ident'>event_sender</span>, <span class='ident'>Role</span>::<span class='ident'>Client</span>, <span class='ident'>keys</span>, <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>NullCache</span>));
         <span class='kw'>let</span> (<span class='ident'>tx</span>, <span class='ident'>rx</span>) <span class='op'>=</span> <span class='ident'>channel</span>();
 
         <span class='prelude-val'>Ok</span>(<span class='ident'>Client</span> {

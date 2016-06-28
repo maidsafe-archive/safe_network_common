@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["GetError","Errors in Get (non-mutating) operations involving Core and Vaults"],["MutationError","Errors in Put/Post/Delete (mutating) operations involving Core and Vaults"]]});
