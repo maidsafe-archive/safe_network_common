@@ -16,3 +16,5 @@ rand = "~0.3.14"
 rustc-serialize = "~0.3.19"
 sodiumoxide = "~0.0.10"
 routing = "~0.23.0"
+unwrap = "~1.1.0"
+

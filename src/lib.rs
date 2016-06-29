@@ -49,6 +49,8 @@ extern crate sodiumoxide;
 extern crate rustc_serialize;
 #[macro_use]
 extern crate maidsafe_utilities;
+#[macro_use]
+extern crate unwrap;
 
 /// Messaging infrastructure
 pub mod messaging;
