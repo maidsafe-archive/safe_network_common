@@ -43,7 +43,7 @@ fn format_binary_array<V: AsRef<[u8]>>(input: V) -> String {
     if input_ref.len() <= 6 {
         let mut ret = String::new();
         for byte in input_ref.iter() {
-            unwrap_result!(write!(ret, "{:02x}", byte));
+            unwrap!(write!(ret, "{:02x}", byte));
         }
         return ret;
     }
