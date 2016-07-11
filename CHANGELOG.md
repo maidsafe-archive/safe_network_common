@@ -1,5 +1,8 @@
 # Safe Network Common - Change Log
 
+## [0.5.0]
+- Depend on sodiumoxide 0.0.10 because newer versions break the build.
+
 ## [0.4.1]
 - Code a From trait to convert from anthing that can be converted to `String` via `Into` into either Get or Mutation Error.
 
