@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/kademlia_routing_table-0.6.0/src/lib.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/kademlia_routing_table-0.6.0/src/lib.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>lib.rs.html -- source</title>
@@ -1130,8 +1130,8 @@
     <span class='doccomment'>/// Returns `true` if the destination os a group, and `false` if it is an individual node.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>is_group</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
         <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
-            <span class='ident'>Destination</span>::<span class='ident'>Group</span>(_, _) <span class='op'>=&gt;</span> <span class='boolval'>true</span>,
-            <span class='ident'>Destination</span>::<span class='ident'>Node</span>(_) <span class='op'>=&gt;</span> <span class='boolval'>false</span>,
+            <span class='ident'>Destination</span>::<span class='ident'>Group</span>(_, _) <span class='op'>=&gt;</span> <span class='boolvalue'>true</span>,
+            <span class='ident'>Destination</span>::<span class='ident'>Node</span>(_) <span class='op'>=&gt;</span> <span class='boolvalue'>false</span>,
         }
     }
 }
@@ -1169,7 +1169,7 @@
     <span class='doccomment'>/// In excess of `bucket_size`, `extra_entries` are considered desired in each bucket. After</span>
     <span class='doccomment'>/// that, additional entries are considered unneeded: If both sides agree, they should</span>
     <span class='doccomment'>/// disconnect.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>our_info</span>: <span class='ident'>T</span>, <span class='ident'>bucket_size</span>: <span class='ident'>usize</span>, <span class='ident'>extra_entries</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>our_info</span>: <span class='ident'>T</span>, <span class='ident'>bucket_size</span>: <span class='ident'>usize</span>, <span class='ident'>extra_entries</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='self'>Self</span> {
         <span class='ident'>RoutingTable</span> {
             <span class='ident'>buckets</span>: <span class='macro'>vec</span><span class='macro'>!</span>[],
             <span class='ident'>our_info</span>: <span class='ident'>our_info</span>,
@@ -1230,10 +1230,10 @@
     <span class='doccomment'>/// the `bucket_size` closest nodes in its bucket.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>need_to_add</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>T</span>::<span class='ident'>Name</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
         <span class='kw'>if</span> <span class='ident'>name</span> <span class='op'>==</span> <span class='self'>self</span>.<span class='ident'>our_name</span>() {
-            <span class='kw'>return</span> <span class='boolval'>false</span>;
+            <span class='kw'>return</span> <span class='boolvalue'>false</span>;
         }
         <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>search</span>(<span class='ident'>name</span>) {
-            (_, <span class='prelude-val'>Ok</span>(_)) <span class='op'>=&gt;</span> <span class='boolval'>false</span>,                 <span class='comment'>// They already are in our routing table.</span>
+            (_, <span class='prelude-val'>Ok</span>(_)) <span class='op'>=&gt;</span> <span class='boolvalue'>false</span>,                 <span class='comment'>// They already are in our routing table.</span>
             (_, <span class='prelude-val'>Err</span>(<span class='ident'>i</span>)) <span class='op'>=&gt;</span> <span class='ident'>i</span> <span class='op'>&lt;</span> <span class='self'>self</span>.<span class='ident'>bucket_size</span>, <span class='comment'>// We need to add them if the bucket is not full.</span>
         }
     }
@@ -1244,7 +1244,7 @@
     <span class='doccomment'>/// in its bucket or if we have any close groups in common with it.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>remove_if_unneeded</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>T</span>::<span class='ident'>Name</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
         <span class='kw'>if</span> <span class='ident'>name</span> <span class='op'>==</span> <span class='self'>self</span>.<span class='ident'>our_name</span>() {
-            <span class='kw'>return</span> <span class='boolval'>false</span>;
+            <span class='kw'>return</span> <span class='boolvalue'>false</span>;
         }
 
         <span class='kw'>if</span> <span class='kw'>let</span> (<span class='ident'>bucket</span>, <span class='prelude-val'>Ok</span>(<span class='ident'>i</span>)) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>search</span>(<span class='ident'>name</span>) {
@@ -1254,7 +1254,7 @@
             }
         }
 
-        <span class='boolval'>false</span>
+        <span class='boolvalue'>false</span>
     }
 
     <span class='doccomment'>/// Returns whether we can allow the given contact to connect to us.</span>
@@ -1266,10 +1266,10 @@
     <span class='doccomment'>/// * we are in the `bucket_size`-group of one of their bucket addresses.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>allow_connection</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>T</span>::<span class='ident'>Name</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
         <span class='kw'>if</span> <span class='ident'>name</span> <span class='op'>==</span> <span class='self'>self</span>.<span class='ident'>our_name</span>() {
-            <span class='kw'>return</span> <span class='boolval'>false</span>;
+            <span class='kw'>return</span> <span class='boolvalue'>false</span>;
         }
         <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>search</span>(<span class='ident'>name</span>) {
-            (_, <span class='prelude-val'>Ok</span>(_)) <span class='op'>=&gt;</span> <span class='boolval'>true</span>,
+            (_, <span class='prelude-val'>Ok</span>(_)) <span class='op'>=&gt;</span> <span class='boolvalue'>true</span>,
             (_, <span class='prelude-val'>Err</span>(<span class='ident'>i</span>)) <span class='op'>=&gt;</span> <span class='ident'>i</span> <span class='op'>&lt;</span> <span class='self'>self</span>.<span class='ident'>bucket_size</span> <span class='op'>||</span> <span class='self'>self</span>.<span class='ident'>is_close_to_bucket_of</span>(<span class='ident'>name</span>),
         }
     }
@@ -1286,7 +1286,7 @@
                 <span class='prelude-val'>None</span>
             };
             <span class='kw'>let</span> _ <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>buckets</span>[<span class='ident'>bucket_index</span>].<span class='ident'>remove</span>(<span class='ident'>i</span>);
-            <span class='kw'>while</span> <span class='self'>self</span>.<span class='ident'>buckets</span>.<span class='ident'>last</span>().<span class='ident'>map_or</span>(<span class='boolval'>false</span>, <span class='ident'>Vec</span>::<span class='ident'>is_empty</span>) {
+            <span class='kw'>while</span> <span class='self'>self</span>.<span class='ident'>buckets</span>.<span class='ident'>last</span>().<span class='ident'>map_or</span>(<span class='boolvalue'>false</span>, <span class='ident'>Vec</span>::<span class='ident'>is_empty</span>) {
                 <span class='kw'>let</span> _ <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>buckets</span>.<span class='ident'>pop</span>();
             }
             <span class='prelude-val'>Some</span>(<span class='ident'>DroppedNodeDetails</span> { <span class='ident'>incomplete_bucket</span>: <span class='ident'>incomplete_bucket</span> })
@@ -1328,12 +1328,12 @@
                 } <span class='kw'>else</span> <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>target_contact</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>get</span>(<span class='ident'>target</span>) {
                     <span class='kw'>return</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>target_contact</span>.<span class='ident'>clone</span>()];
                 } <span class='kw'>else</span> <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>is_close</span>(<span class='ident'>target</span>, <span class='self'>self</span>.<span class='ident'>bucket_size</span>) {
-                    <span class='kw'>return</span> <span class='self'>self</span>.<span class='ident'>closest_nodes_to</span>(<span class='ident'>target</span>, <span class='self'>self</span>.<span class='ident'>bucket_size</span> <span class='op'>-</span> <span class='number'>1</span>, <span class='boolval'>false</span>);
+                    <span class='kw'>return</span> <span class='self'>self</span>.<span class='ident'>closest_nodes_to</span>(<span class='ident'>target</span>, <span class='self'>self</span>.<span class='ident'>bucket_size</span> <span class='op'>-</span> <span class='number'>1</span>, <span class='boolvalue'>false</span>);
                 }
                 <span class='ident'>target</span>
             }
         };
-        <span class='self'>self</span>.<span class='ident'>closest_nodes_to</span>(<span class='ident'>target</span>, <span class='ident'>route</span> <span class='op'>+</span> <span class='number'>2</span>, <span class='boolval'>false</span>)
+        <span class='self'>self</span>.<span class='ident'>closest_nodes_to</span>(<span class='ident'>target</span>, <span class='ident'>route</span> <span class='op'>+</span> <span class='number'>2</span>, <span class='boolvalue'>false</span>)
             .<span class='ident'>into_iter</span>()
             .<span class='ident'>filter</span>(<span class='op'>|</span><span class='ident'>node</span><span class='op'>|</span> <span class='ident'>node</span>.<span class='ident'>name</span>() <span class='op'>!=</span> <span class='ident'>hop</span>)
             .<span class='ident'>skip</span>(<span class='ident'>route</span>)
@@ -1356,7 +1356,7 @@
     <span class='doccomment'>/// Returns the other members of `name`&#39;s close group, or `None` if we are not a member of it.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>other_close_nodes</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>T</span>::<span class='ident'>Name</span>, <span class='ident'>group_size</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;&gt;</span> {
         <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>is_close</span>(<span class='ident'>name</span>, <span class='ident'>group_size</span>) {
-            <span class='prelude-val'>Some</span>(<span class='self'>self</span>.<span class='ident'>closest_nodes_to</span>(<span class='ident'>name</span>, <span class='ident'>group_size</span> <span class='op'>-</span> <span class='number'>1</span>, <span class='boolval'>false</span>))
+            <span class='prelude-val'>Some</span>(<span class='self'>self</span>.<span class='ident'>closest_nodes_to</span>(<span class='ident'>name</span>, <span class='ident'>group_size</span> <span class='op'>-</span> <span class='number'>1</span>, <span class='boolvalue'>false</span>))
         } <span class='kw'>else</span> {
             <span class='prelude-val'>None</span>
         }
@@ -1365,7 +1365,7 @@
     <span class='doccomment'>/// Returns the members of `name`&#39;s close group, or `None` if we are not a member of it.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>close_nodes</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='kw-2'>&amp;</span><span class='ident'>T</span>::<span class='ident'>Name</span>, <span class='ident'>group_size</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;&gt;</span> {
         <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>is_close</span>(<span class='ident'>name</span>, <span class='ident'>group_size</span>) {
-            <span class='prelude-val'>Some</span>(<span class='self'>self</span>.<span class='ident'>closest_nodes_to</span>(<span class='ident'>name</span>, <span class='ident'>group_size</span>, <span class='boolval'>true</span>))
+            <span class='prelude-val'>Some</span>(<span class='self'>self</span>.<span class='ident'>closest_nodes_to</span>(<span class='ident'>name</span>, <span class='ident'>group_size</span>, <span class='boolvalue'>true</span>))
         } <span class='kw'>else</span> {
             <span class='prelude-val'>None</span>
         }
@@ -1387,11 +1387,11 @@
             <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>our_name</span>().<span class='ident'>differs_in_bit</span>(<span class='ident'>name</span>, <span class='ident'>bucket_index</span>) {
                 <span class='ident'>count</span> <span class='op'>+=</span> <span class='ident'>bucket</span>.<span class='ident'>len</span>();
                 <span class='kw'>if</span> <span class='ident'>count</span> <span class='op'>&gt;=</span> <span class='ident'>group_size</span> {
-                    <span class='kw'>return</span> <span class='boolval'>false</span>;
+                    <span class='kw'>return</span> <span class='boolvalue'>false</span>;
                 }
             }
         }
-        <span class='boolval'>true</span>
+        <span class='boolvalue'>true</span>
     }
 
     <span class='doccomment'>/// Number of entries in the routing table.</span>
@@ -1511,16 +1511,16 @@
     <span class='doccomment'>/// Otherwise, no such address exists and `false` is returned.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>is_in_any_close_group_with</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>bucket_index</span>: <span class='ident'>usize</span>, <span class='ident'>group_size</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
         <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>buckets</span>.<span class='ident'>get</span>(<span class='ident'>bucket_index</span>).<span class='ident'>map_or</span>(<span class='number'>0</span>, <span class='ident'>Vec</span>::<span class='ident'>len</span>) <span class='op'>&lt;</span> <span class='ident'>group_size</span> {
-            <span class='kw'>return</span> <span class='boolval'>true</span>;
+            <span class='kw'>return</span> <span class='boolvalue'>true</span>;
         }
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>count</span> <span class='op'>=</span> <span class='number'>0</span>;
         <span class='kw'>for</span> <span class='ident'>bucket</span> <span class='kw'>in</span> <span class='self'>self</span>.<span class='ident'>buckets</span>.<span class='ident'>iter</span>().<span class='ident'>skip</span>(<span class='ident'>bucket_index</span> <span class='op'>+</span> <span class='number'>1</span>) {
             <span class='ident'>count</span> <span class='op'>+=</span> <span class='ident'>bucket</span>.<span class='ident'>len</span>();
             <span class='kw'>if</span> <span class='ident'>count</span> <span class='op'>&gt;=</span> <span class='ident'>group_size</span> <span class='op'>-</span> <span class='number'>1</span> {
-                <span class='kw'>return</span> <span class='boolval'>false</span>;
+                <span class='kw'>return</span> <span class='boolvalue'>false</span>;
             }
         }
-        <span class='boolval'>true</span>
+        <span class='boolvalue'>true</span>
     }
 
     <span class='doccomment'>/// Returns whether we are `bucket_size`-close to one of `name`&#39;s bucket addresses or to `name`</span>
@@ -1536,11 +1536,11 @@
                 <span class='ident'>largest_bucket</span> <span class='op'>=</span> <span class='ident'>cmp</span>::<span class='ident'>max</span>(<span class='ident'>largest_bucket</span>, <span class='ident'>bucket</span>.<span class='ident'>len</span>());
                 <span class='ident'>closer_contacts</span> <span class='op'>+=</span> <span class='ident'>bucket</span>.<span class='ident'>len</span>();
                 <span class='kw'>if</span> <span class='ident'>closer_contacts</span> <span class='op'>&gt;=</span> <span class='ident'>largest_bucket</span> <span class='op'>+</span> <span class='self'>self</span>.<span class='ident'>bucket_size</span> {
-                    <span class='kw'>return</span> <span class='boolval'>false</span>;
+                    <span class='kw'>return</span> <span class='boolvalue'>false</span>;
                 }
             }
         }
-        <span class='boolval'>true</span>
+        <span class='boolvalue'>true</span>
     }
 
     <span class='doccomment'>/// This is equivalent to the common leading bits of `self.our_name` and `name` where &quot;leading</span>
@@ -1586,7 +1586,7 @@
 
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>test</span> {
-    <span class='kw'>use</span> <span class='ident'>super</span>::<span class='op'>*</span>;
+    <span class='kw'>use</span> <span class='kw'>super</span>::<span class='op'>*</span>;
 
     <span class='kw'>fn</span> <span class='ident'>extend_table</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span>, <span class='ident'>I</span><span class='op'>&gt;</span>(<span class='ident'>table</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>RoutingTable</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>, <span class='ident'>entries</span>: <span class='ident'>I</span>)
         <span class='kw'>where</span> <span class='ident'>I</span>: <span class='ident'>IntoIterator</span><span class='op'>&lt;</span><span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>T</span><span class='op'>&gt;</span>,
@@ -1831,8 +1831,8 @@
     <span class='kw'>fn</span> <span class='ident'>is_in_any_close_group_with</span>() {
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>table</span> <span class='op'>=</span> <span class='ident'>RoutingTable</span>::<span class='ident'>new</span>(<span class='number'>4u8</span>, <span class='number'>3</span>, <span class='number'>1</span>);
         <span class='ident'>extend_table</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>table</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>5</span>, <span class='number'>6</span>, <span class='number'>7</span>]);
-        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>4</span>, <span class='number'>5</span>], <span class='ident'>table</span>.<span class='ident'>closest_nodes_to</span>(<span class='kw-2'>&amp;</span><span class='number'>0</span>, <span class='number'>5</span>, <span class='boolval'>true</span>));
-        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>5</span>, <span class='number'>6</span>], <span class='ident'>table</span>.<span class='ident'>closest_nodes_to</span>(<span class='kw-2'>&amp;</span><span class='number'>0</span>, <span class='number'>5</span>, <span class='boolval'>false</span>));
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>4</span>, <span class='number'>5</span>], <span class='ident'>table</span>.<span class='ident'>closest_nodes_to</span>(<span class='kw-2'>&amp;</span><span class='number'>0</span>, <span class='number'>5</span>, <span class='boolvalue'>true</span>));
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>5</span>, <span class='number'>6</span>], <span class='ident'>table</span>.<span class='ident'>closest_nodes_to</span>(<span class='kw-2'>&amp;</span><span class='number'>0</span>, <span class='number'>5</span>, <span class='boolvalue'>false</span>));
     }
 }
 </pre>
@@ -1859,6 +1859,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 

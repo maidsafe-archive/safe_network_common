@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Node","Interface for sending and receiving messages to and from other nodes, in the role of a full routing node."]]});
+initSidebarItems({"struct":[["Node","Interface for sending and receiving messages to and from other nodes, in the role of a full routing node."],["NodeBuilder","A builder to configure and create a new `Node`."]]});

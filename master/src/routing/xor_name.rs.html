@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.23.1/src/xor_name.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/routing-0.24.0/src/xor_name.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>xor_name.rs.html -- source</title>
@@ -408,7 +408,7 @@
 
 <span class='kw'>use</span> <span class='ident'>rand</span>;
 <span class='kw'>use</span> <span class='ident'>rustc_serialize</span>::{<span class='ident'>Decodable</span>, <span class='ident'>Decoder</span>, <span class='ident'>Encodable</span>, <span class='ident'>Encoder</span>};
-<span class='kw'>use</span> <span class='ident'>rustc_serialize</span>::<span class='ident'>hex</span>::{<span class='ident'>ToHex</span>, <span class='ident'>FromHex</span>, <span class='ident'>FromHexError</span>};
+<span class='kw'>use</span> <span class='ident'>rustc_serialize</span>::<span class='ident'>hex</span>::{<span class='ident'>FromHex</span>, <span class='ident'>FromHexError</span>, <span class='ident'>ToHex</span>};
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cmp</span>::<span class='ident'>Ordering</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::{<span class='ident'>fmt</span>, <span class='ident'>ops</span>};
 <span class='kw'>use</span> <span class='ident'>kademlia_routing_table</span>::<span class='ident'>Xorable</span>;
@@ -636,7 +636,7 @@
 <span class='kw'>mod</span> <span class='ident'>test</span> {
     <span class='kw'>use</span> <span class='ident'>maidsafe_utilities</span>::<span class='ident'>serialisation</span>::{<span class='ident'>deserialise</span>, <span class='ident'>serialise</span>};
     <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cmp</span>::<span class='ident'>Ordering</span>;
-    <span class='kw'>use</span> <span class='ident'>super</span>::<span class='op'>*</span>;
+    <span class='kw'>use</span> <span class='kw'>super</span>::<span class='op'>*</span>;
     <span class='kw'>use</span> <span class='ident'>rand</span>;
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
@@ -759,6 +759,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 

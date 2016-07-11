@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.23.1/src/message_filter.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/routing-0.24.0/src/message_filter.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>message_filter.rs.html -- source</title>
@@ -431,7 +431,7 @@
 
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>test</span> {
-    <span class='kw'>use</span> <span class='ident'>super</span>::<span class='op'>*</span>;
+    <span class='kw'>use</span> <span class='kw'>super</span>::<span class='op'>*</span>;
     <span class='kw'>use</span> <span class='ident'>rand</span>;
     <span class='kw'>use</span> <span class='ident'>rand</span>::<span class='ident'>Rng</span>;
     <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>thread</span>;
@@ -523,8 +523,8 @@
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>insert_resets_timeout</span>() {
         <span class='comment'>// Check re-adding a message to a filter alters its expiry time.</span>
-        <span class='kw'>let</span> <span class='ident'>time_to_live</span> <span class='op'>=</span> <span class='ident'>Duration</span>::<span class='ident'>from_millis</span>(<span class='number'>200</span>);
-        <span class='kw'>let</span> <span class='ident'>sleep_duration</span> <span class='op'>=</span> <span class='ident'>Duration</span>::<span class='ident'>from_millis</span>(<span class='number'>150</span>); <span class='comment'>// more than half of `time_to_live`</span>
+        <span class='kw'>let</span> <span class='ident'>time_to_live</span> <span class='op'>=</span> <span class='ident'>Duration</span>::<span class='ident'>from_millis</span>(<span class='number'>300</span>);
+        <span class='kw'>let</span> <span class='ident'>sleep_duration</span> <span class='op'>=</span> <span class='ident'>Duration</span>::<span class='ident'>from_millis</span>(<span class='number'>180</span>); <span class='comment'>// more than half of `time_to_live`</span>
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>msg_filter</span> <span class='op'>=</span> <span class='ident'>MessageFilter</span>::<span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>::<span class='ident'>with_expiry_duration</span>(<span class='ident'>time_to_live</span>);
 
         <span class='comment'>// Add &quot;0&quot;.</span>
@@ -567,6 +567,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 

@@ -1,5 +1,5 @@
 (function() {var implementors = {};
-implementors['kademlia_routing_table'] = [];
+implementors["kademlia_routing_table"] = [];
 
             if (window.register_implementors) {
                 window.register_implementors(implementors);

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.23.1/src/stats.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/routing-0.24.0/src/stats.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>stats.rs.html -- source</title>
@@ -253,7 +253,7 @@
 <span class='comment'>// relating to use of the SAFE Network Software.</span>
 
 <span class='kw'>use</span> <span class='ident'>core</span>::<span class='ident'>GROUP_SIZE</span>;
-<span class='kw'>use</span> <span class='ident'>messages</span>::{<span class='ident'>DirectMessage</span>, <span class='ident'>MessageContent</span>, <span class='ident'>RoutingMessage</span>, <span class='ident'>Request</span>, <span class='ident'>Response</span>};
+<span class='kw'>use</span> <span class='ident'>messages</span>::{<span class='ident'>DirectMessage</span>, <span class='ident'>MessageContent</span>, <span class='ident'>Request</span>, <span class='ident'>Response</span>, <span class='ident'>RoutingMessage</span>};
 
 <span class='doccomment'>/// The number of messages after which the message statistics should be printed.</span>
 <span class='kw'>const</span> <span class='ident'>MSG_LOG_COUNT</span>: <span class='ident'>usize</span> <span class='op'>=</span> <span class='number'>1000</span>;
@@ -451,6 +451,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 

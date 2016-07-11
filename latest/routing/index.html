@@ -47,7 +47,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-0' class='srclink' href='../src/routing/lib.rs.html#18-193' title='goto source code'>[src]</a></span></h1>
+               </span><a id='src-0' class='srclink' href='../src/routing/lib.rs.html#18-192' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Client and node implementations for a resilient decentralised network.</p>
 
 <p>The network is based on the <a href="../kademlia_routing_table/index.html"><code>kademlia_routing_table</code></a> and uses the XOR metric to define the
@@ -101,8 +101,7 @@ bootstrap node for the client, and messages to and from the client will be route
 <span class='kw'>use</span> <span class='ident'>routing</span>::{<span class='ident'>Node</span>, <span class='ident'>Event</span>};
 
 <span class='kw'>let</span> (<span class='ident'>sender</span>, <span class='ident'>_receiver</span>) <span class='op'>=</span> <span class='ident'>mpsc</span>::<span class='ident'>channel</span>::<span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>();
-<span class='kw'>let</span> <span class='ident'>first_node</span> <span class='op'>=</span> <span class='boolval'>false</span>;
-<span class='kw'>let</span> _ <span class='op'>=</span> <span class='ident'>Node</span>::<span class='ident'>new</span>(<span class='ident'>sender</span>, <span class='ident'>first_node</span>).<span class='ident'>unwrap</span>();</pre>
+<span class='kw'>let</span> _ <span class='op'>=</span> <span class='ident'>Node</span>::<span class='ident'>builder</span>().<span class='ident'>create</span>(<span class='ident'>sender</span>).<span class='ident'>unwrap</span>();</pre>
 
 <p>Upon creation, the node will first connect to the network as a client. Once it has client
 status, it requests a new name from the network, and then integrates itself in the network with
@@ -157,6 +156,13 @@ client.</p>
                            <td class='docblock short'>
                                 <p>Interface for sending and receiving messages to and from other nodes, in the role of a full
 routing node.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.NodeBuilder.html'
+                                  title='routing::NodeBuilder'>NodeBuilder</a></td>
+                           <td class='docblock short'>
+                                <p>A builder to configure and create a new <code>Node</code>.</p>
                            </td>
                        </tr>
                        <tr class=' module-item'>
@@ -318,6 +324,8 @@ by layers above routing.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 

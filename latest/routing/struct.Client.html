@@ -55,7 +55,8 @@ client.</p>
 
 <p>A client is connected to the network via one or more nodes. Messages are never routed via a
 client, and a client cannot be part of a group authority.</p>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl <a class='struct' href='../routing/struct.Client.html' title='routing::Client'>Client</a></code></h3><div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>(event_sender: <a class='struct' href='https://doc.rust-lang.org/nightly/std/sync/mpsc/struct.Sender.html' title='std::sync::mpsc::Sender'>Sender</a>&lt;<a class='enum' href='../routing/enum.Event.html' title='routing::Event'>Event</a>&gt;, keys: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../routing/struct.FullId.html' title='routing::FullId'>FullId</a>&gt;) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../routing/struct.Client.html' title='routing::Client'>Client</a>, <a class='enum' href='../routing/enum.RoutingError.html' title='routing::RoutingError'>RoutingError</a>&gt;</code></h4>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../routing/struct.Client.html' title='routing::Client'>Client</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-438' class='srclink' href='../src/routing/client.rs.html#57-203' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>(event_sender: <a class='struct' href='https://doc.rust-lang.org/nightly/std/sync/mpsc/struct.Sender.html' title='std::sync::mpsc::Sender'>Sender</a>&lt;<a class='enum' href='../routing/enum.Event.html' title='routing::Event'>Event</a>&gt;, keys: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../routing/struct.FullId.html' title='routing::FullId'>FullId</a>&gt;) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../routing/struct.Client.html' title='routing::Client'>Client</a>, <a class='enum' href='../routing/enum.RoutingError.html' title='routing::RoutingError'>RoutingError</a>&gt;</code></h4>
 <div class='docblock'><p>Create a new <code>Client</code>.</p>
 
 <p>It will automatically connect to the network, but not attempt to achieve full routing node
@@ -78,8 +79,10 @@ exists to ensure that the client cannot choose its <code>ClientAuthority</code>.
 <div class='docblock'><p>Request account information for the Client calling this function</p>
 </div><h4 id='method.name' class='method'><code>fn <a href='#method.name' class='fnname'>name</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../routing/struct.XorName.html' title='routing::XorName'>XorName</a>, <a class='enum' href='../routing/enum.InterfaceError.html' title='routing::InterfaceError'>InterfaceError</a>&gt;</code></h4>
 <div class='docblock'><p>Returns the name of this node.</p>
-</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='../routing/struct.Client.html' title='routing::Client'>Client</a></code></h3><div class='impl-items'><h4 id='method.drop' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop' class='fnname'>drop</a>(&amp;mut self)</code></h4>
-</div></section>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='../routing/struct.Client.html' title='routing::Client'>Client</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-507' class='srclink' href='../src/routing/client.rs.html#205-211' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.drop' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop' class='fnname'>drop</a>(&amp;mut self)</code></h4>
+<div class='docblock'><p>A method called when the value goes out of scope. <a href="https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop">Read more</a></p>
+</div></div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -102,6 +105,8 @@ exists to ensure that the client cannot choose its <code>ClientAuthority</code>.
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 

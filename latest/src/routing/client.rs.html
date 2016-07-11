@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.23.1/src/client.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/routing-0.24.0/src/client.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>client.rs.html -- source</title>
@@ -287,7 +287,7 @@
 <span class='kw'>use</span> <span class='ident'>data</span>::{<span class='ident'>Data</span>, <span class='ident'>DataIdentifier</span>};
 <span class='kw'>use</span> <span class='ident'>error</span>::{<span class='ident'>InterfaceError</span>, <span class='ident'>RoutingError</span>};
 <span class='kw'>use</span> <span class='ident'>authority</span>::<span class='ident'>Authority</span>;
-<span class='kw'>use</span> <span class='ident'>messages</span>::{<span class='ident'>Request</span>, <span class='ident'>DEFAULT_PRIORITY</span>, <span class='ident'>CLIENT_GET_PRIORITY</span>};
+<span class='kw'>use</span> <span class='ident'>messages</span>::{<span class='ident'>CLIENT_GET_PRIORITY</span>, <span class='ident'>DEFAULT_PRIORITY</span>, <span class='ident'>Request</span>};
 <span class='kw'>use</span> <span class='ident'>types</span>::<span class='ident'>MessageId</span>;
 <span class='kw'>use</span> <span class='ident'>xor_name</span>::<span class='ident'>XorName</span>;
 
@@ -327,7 +327,7 @@
 
         <span class='comment'>// start the handler for routing with a restriction to become a full node</span>
         <span class='kw'>let</span> (<span class='ident'>action_sender</span>, <span class='kw-2'>mut</span> <span class='ident'>core</span>) <span class='op'>=</span>
-            <span class='ident'>Core</span>::<span class='ident'>new</span>(<span class='ident'>event_sender</span>, <span class='ident'>Role</span>::<span class='ident'>Client</span>, <span class='ident'>keys</span>, <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>NullCache</span>));
+            <span class='ident'>Core</span>::<span class='ident'>new</span>(<span class='ident'>event_sender</span>, <span class='ident'>Role</span>::<span class='ident'>Client</span>, <span class='ident'>keys</span>, <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>NullCache</span>), <span class='boolvalue'>false</span>);
         <span class='kw'>let</span> (<span class='ident'>tx</span>, <span class='ident'>rx</span>) <span class='op'>=</span> <span class='ident'>channel</span>();
 
         <span class='kw'>let</span> <span class='ident'>raii_joiner</span> <span class='op'>=</span> <span class='ident'>RaiiThreadJoiner</span>::<span class='ident'>new</span>(<span class='macro'>thread</span><span class='macro'>!</span>(<span class='string'>&quot;Client thread&quot;</span>, <span class='kw'>move</span> <span class='op'>||</span> {
@@ -347,7 +347,7 @@
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>event_sender</span>: <span class='ident'>Sender</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>, <span class='ident'>keys</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>FullId</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Client</span>, <span class='ident'>RoutingError</span><span class='op'>&gt;</span> {
         <span class='comment'>// start the handler for routing with a restriction to become a full node</span>
         <span class='kw'>let</span> (<span class='ident'>action_sender</span>, <span class='ident'>core</span>) <span class='op'>=</span>
-            <span class='ident'>Core</span>::<span class='ident'>new</span>(<span class='ident'>event_sender</span>, <span class='ident'>Role</span>::<span class='ident'>Client</span>, <span class='ident'>keys</span>, <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>NullCache</span>));
+            <span class='ident'>Core</span>::<span class='ident'>new</span>(<span class='ident'>event_sender</span>, <span class='ident'>Role</span>::<span class='ident'>Client</span>, <span class='ident'>keys</span>, <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>NullCache</span>), <span class='boolvalue'>false</span>);
         <span class='kw'>let</span> (<span class='ident'>tx</span>, <span class='ident'>rx</span>) <span class='op'>=</span> <span class='ident'>channel</span>();
 
         <span class='prelude-val'>Ok</span>(<span class='ident'>Client</span> {
@@ -489,6 +489,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 

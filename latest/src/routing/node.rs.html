@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.23.1/src/node.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/routing-0.24.0/src/node.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>node.rs.html -- source</title>
@@ -522,6 +522,22 @@
 <span id="478">478</span>
 <span id="479">479</span>
 <span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 MaidSafe.net limited.</span>
 <span class='comment'>//</span>
@@ -557,12 +573,89 @@
 <span class='kw'>use</span> <span class='ident'>event</span>::<span class='ident'>Event</span>;
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
 <span class='kw'>use</span> <span class='ident'>kademlia_routing_table</span>::<span class='ident'>RoutingTable</span>;
-<span class='kw'>use</span> <span class='ident'>messages</span>::{<span class='ident'>UserMessage</span>, <span class='ident'>Request</span>, <span class='ident'>Response</span>, <span class='ident'>RELOCATE_PRIORITY</span>, <span class='ident'>DEFAULT_PRIORITY</span>,
-               <span class='ident'>CLIENT_GET_PRIORITY</span>};
+<span class='kw'>use</span> <span class='ident'>messages</span>::{<span class='ident'>CLIENT_GET_PRIORITY</span>, <span class='ident'>DEFAULT_PRIORITY</span>, <span class='ident'>RELOCATE_PRIORITY</span>, <span class='ident'>Request</span>, <span class='ident'>Response</span>,
+               <span class='ident'>UserMessage</span>};
 <span class='kw'>use</span> <span class='ident'>xor_name</span>::<span class='ident'>XorName</span>;
 <span class='kw'>use</span> <span class='ident'>types</span>::<span class='ident'>MessageId</span>;
 
 <span class='kw'>type</span> <span class='ident'>RoutingResult</span> <span class='op'>=</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>RoutingError</span><span class='op'>&gt;</span>;
+
+<span class='doccomment'>/// A builder to configure and create a new `Node`.</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>NodeBuilder</span> {
+    <span class='ident'>cache</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Cache</span><span class='op'>&gt;</span>,
+    <span class='ident'>role</span>: <span class='ident'>Role</span>,
+    <span class='ident'>deny_other_local_nodes</span>: <span class='ident'>bool</span>,
+}
+
+<span class='kw'>impl</span> <span class='ident'>NodeBuilder</span> {
+    <span class='doccomment'>/// Configures the node to use the given request cache.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>cache</span>(<span class='self'>self</span>, <span class='ident'>cache</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Cache</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>NodeBuilder</span> {
+        <span class='ident'>NodeBuilder</span> { <span class='ident'>cache</span>: <span class='ident'>cache</span>, ..<span class='self'>self</span> }
+    }
+
+    <span class='doccomment'>/// Configures the node to start a new network instead of joining an existing one.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>first</span>(<span class='self'>self</span>, <span class='ident'>first</span>: <span class='ident'>bool</span>) <span class='op'>-&gt;</span> <span class='ident'>NodeBuilder</span> {
+        <span class='kw'>if</span> <span class='ident'>first</span> {
+            <span class='ident'>NodeBuilder</span> { <span class='ident'>role</span>: <span class='ident'>Role</span>::<span class='ident'>FirstNode</span>, ..<span class='self'>self</span> }
+        } <span class='kw'>else</span> {
+            <span class='ident'>NodeBuilder</span> { <span class='ident'>role</span>: <span class='ident'>Role</span>::<span class='ident'>Node</span>, ..<span class='self'>self</span> }
+        }
+    }
+
+    <span class='doccomment'>/// Causes node creation to fail if another node on the local network is detected.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>deny_other_local_nodes</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>NodeBuilder</span> {
+        <span class='ident'>NodeBuilder</span> { <span class='ident'>deny_other_local_nodes</span>: <span class='boolvalue'>true</span>, ..<span class='self'>self</span> }
+    }
+
+    <span class='doccomment'>/// Creates new `Node`.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// It will automatically connect to the network in the same way a client does, but then</span>
+    <span class='doccomment'>/// request a new name and integrate itself into the network using the new name.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// The initial `Node` object will have newly generated keys.</span>
+    <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>))]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>create</span>(<span class='self'>self</span>, <span class='ident'>event_sender</span>: <span class='ident'>Sender</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Node</span>, <span class='ident'>RoutingError</span><span class='op'>&gt;</span> {
+        <span class='ident'>sodiumoxide</span>::<span class='ident'>init</span>();  <span class='comment'>// enable shared global (i.e. safe to multithread now)</span>
+
+        <span class='comment'>// start the handler for routing without a restriction to become a full node</span>
+        <span class='kw'>let</span> (<span class='ident'>action_sender</span>, <span class='kw-2'>mut</span> <span class='ident'>core</span>) <span class='op'>=</span> <span class='ident'>Core</span>::<span class='ident'>new</span>(<span class='ident'>event_sender</span>,
+                                                  <span class='self'>self</span>.<span class='ident'>role</span>,
+                                                  <span class='prelude-val'>None</span>,
+                                                  <span class='self'>self</span>.<span class='ident'>cache</span>,
+                                                  <span class='self'>self</span>.<span class='ident'>deny_other_local_nodes</span>);
+        <span class='kw'>let</span> (<span class='ident'>tx</span>, <span class='ident'>rx</span>) <span class='op'>=</span> <span class='ident'>channel</span>();
+
+        <span class='kw'>let</span> <span class='ident'>raii_joiner</span> <span class='op'>=</span> <span class='ident'>RaiiThreadJoiner</span>::<span class='ident'>new</span>(<span class='macro'>thread</span><span class='macro'>!</span>(<span class='string'>&quot;Node thread&quot;</span>, <span class='kw'>move</span> <span class='op'>||</span> {
+            <span class='ident'>core</span>.<span class='ident'>run</span>();
+        }));
+
+        <span class='prelude-val'>Ok</span>(<span class='ident'>Node</span> {
+            <span class='ident'>interface_result_tx</span>: <span class='ident'>tx</span>,
+            <span class='ident'>interface_result_rx</span>: <span class='ident'>rx</span>,
+            <span class='ident'>action_sender</span>: <span class='ident'>action_sender</span>,
+            <span class='ident'>_raii_joiner</span>: <span class='ident'>raii_joiner</span>,
+        })
+    }
+
+    <span class='doccomment'>/// Creates a new `Node` for unit testing.</span>
+    <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>create</span>(<span class='self'>self</span>, <span class='ident'>event_sender</span>: <span class='ident'>Sender</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Node</span>, <span class='ident'>RoutingError</span><span class='op'>&gt;</span> {
+        <span class='comment'>// start the handler for routing without a restriction to become a full node</span>
+        <span class='kw'>let</span> (<span class='ident'>action_sender</span>, <span class='ident'>core</span>) <span class='op'>=</span> <span class='ident'>Core</span>::<span class='ident'>new</span>(<span class='ident'>event_sender</span>,
+                                              <span class='self'>self</span>.<span class='ident'>role</span>,
+                                              <span class='prelude-val'>None</span>,
+                                              <span class='self'>self</span>.<span class='ident'>cache</span>,
+                                              <span class='self'>self</span>.<span class='ident'>deny_other_local_nodes</span>);
+        <span class='kw'>let</span> (<span class='ident'>tx</span>, <span class='ident'>rx</span>) <span class='op'>=</span> <span class='ident'>channel</span>();
+
+        <span class='prelude-val'>Ok</span>(<span class='ident'>Node</span> {
+            <span class='ident'>interface_result_tx</span>: <span class='ident'>tx</span>,
+            <span class='ident'>interface_result_rx</span>: <span class='ident'>rx</span>,
+            <span class='ident'>action_sender</span>: <span class='ident'>action_sender</span>,
+            <span class='ident'>core</span>: <span class='ident'>RefCell</span>::<span class='ident'>new</span>(<span class='ident'>core</span>),
+        })
+    }
+}
 
 <span class='doccomment'>/// Interface for sending and receiving messages to and from other nodes, in the role of a full</span>
 <span class='doccomment'>/// routing node.</span>
@@ -585,74 +678,13 @@
 }
 
 <span class='kw'>impl</span> <span class='ident'>Node</span> {
-    <span class='doccomment'>/// Create a new `Node`.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// It will automatically connect to the network in the same way a client does, but then</span>
-    <span class='doccomment'>/// request a new name and integrate itself into the network using the new name.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// The initial `Node` object will have newly generated keys.</span>
-    <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>))]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>event_sender</span>: <span class='ident'>Sender</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>, <span class='ident'>first_node</span>: <span class='ident'>bool</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Node</span>, <span class='ident'>RoutingError</span><span class='op'>&gt;</span> {
-        <span class='ident'>Self</span>::<span class='ident'>with_cache</span>(<span class='ident'>event_sender</span>, <span class='ident'>first_node</span>, <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>NullCache</span>))
-    }
-
-    <span class='doccomment'>/// Create a new `Node` given a cache instance.</span>
-    <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>))]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>with_cache</span>(<span class='ident'>event_sender</span>: <span class='ident'>Sender</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>,
-                      <span class='ident'>first_node</span>: <span class='ident'>bool</span>,
-                      <span class='ident'>cache</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Cache</span><span class='op'>&gt;</span>)
-                      <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Node</span>, <span class='ident'>RoutingError</span><span class='op'>&gt;</span> {
-        <span class='ident'>sodiumoxide</span>::<span class='ident'>init</span>();  <span class='comment'>// enable shared global (i.e. safe to multithread now)</span>
-
-        <span class='kw'>let</span> <span class='ident'>role</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='ident'>first_node</span> {
-            <span class='ident'>Role</span>::<span class='ident'>FirstNode</span>
-        } <span class='kw'>else</span> {
-            <span class='ident'>Role</span>::<span class='ident'>Node</span>
-        };
-        <span class='comment'>// start the handler for routing without a restriction to become a full node</span>
-        <span class='kw'>let</span> (<span class='ident'>action_sender</span>, <span class='kw-2'>mut</span> <span class='ident'>core</span>) <span class='op'>=</span> <span class='ident'>Core</span>::<span class='ident'>new</span>(<span class='ident'>event_sender</span>, <span class='ident'>role</span>, <span class='prelude-val'>None</span>, <span class='ident'>cache</span>);
-        <span class='kw'>let</span> (<span class='ident'>tx</span>, <span class='ident'>rx</span>) <span class='op'>=</span> <span class='ident'>channel</span>();
-
-        <span class='kw'>let</span> <span class='ident'>raii_joiner</span> <span class='op'>=</span> <span class='ident'>RaiiThreadJoiner</span>::<span class='ident'>new</span>(<span class='macro'>thread</span><span class='macro'>!</span>(<span class='string'>&quot;Node thread&quot;</span>, <span class='kw'>move</span> <span class='op'>||</span> {
-            <span class='ident'>core</span>.<span class='ident'>run</span>();
-        }));
-
-        <span class='prelude-val'>Ok</span>(<span class='ident'>Node</span> {
-            <span class='ident'>interface_result_tx</span>: <span class='ident'>tx</span>,
-            <span class='ident'>interface_result_rx</span>: <span class='ident'>rx</span>,
-            <span class='ident'>action_sender</span>: <span class='ident'>action_sender</span>,
-            <span class='ident'>_raii_joiner</span>: <span class='ident'>raii_joiner</span>,
-        })
-    }
-
-
-    <span class='doccomment'>/// Create a new `Node` for unit testing.</span>
-    <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>event_sender</span>: <span class='ident'>Sender</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>, <span class='ident'>first_node</span>: <span class='ident'>bool</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Node</span>, <span class='ident'>RoutingError</span><span class='op'>&gt;</span> {
-        <span class='ident'>Self</span>::<span class='ident'>with_cache</span>(<span class='ident'>event_sender</span>, <span class='ident'>first_node</span>, <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>NullCache</span>))
-    }
-
-    <span class='doccomment'>/// Create a new `Node` for unit testing.</span>
-    <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>with_cache</span>(<span class='ident'>event_sender</span>: <span class='ident'>Sender</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>,
-                      <span class='ident'>first_node</span>: <span class='ident'>bool</span>,
-                      <span class='ident'>cache</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Cache</span><span class='op'>&gt;</span>)
-                      <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Node</span>, <span class='ident'>RoutingError</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>role</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='ident'>first_node</span> {
-            <span class='ident'>Role</span>::<span class='ident'>FirstNode</span>
-        } <span class='kw'>else</span> {
-            <span class='ident'>Role</span>::<span class='ident'>Node</span>
-        };
-        <span class='comment'>// start the handler for routing without a restriction to become a full node</span>
-        <span class='kw'>let</span> (<span class='ident'>action_sender</span>, <span class='ident'>core</span>) <span class='op'>=</span> <span class='ident'>Core</span>::<span class='ident'>new</span>(<span class='ident'>event_sender</span>, <span class='ident'>role</span>, <span class='prelude-val'>None</span>, <span class='ident'>cache</span>);
-        <span class='kw'>let</span> (<span class='ident'>tx</span>, <span class='ident'>rx</span>) <span class='op'>=</span> <span class='ident'>channel</span>();
-
-        <span class='prelude-val'>Ok</span>(<span class='ident'>Node</span> {
-            <span class='ident'>interface_result_tx</span>: <span class='ident'>tx</span>,
-            <span class='ident'>interface_result_rx</span>: <span class='ident'>rx</span>,
-            <span class='ident'>action_sender</span>: <span class='ident'>action_sender</span>,
-            <span class='ident'>core</span>: <span class='ident'>RefCell</span>::<span class='ident'>new</span>(<span class='ident'>core</span>),
-        })
+    <span class='doccomment'>/// Creates a new builder to configure and create a `Node`.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>builder</span>() <span class='op'>-&gt;</span> <span class='ident'>NodeBuilder</span> {
+        <span class='ident'>NodeBuilder</span> {
+            <span class='ident'>cache</span>: <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>NullCache</span>),
+            <span class='ident'>role</span>: <span class='ident'>Role</span>::<span class='ident'>Node</span>,
+            <span class='ident'>deny_other_local_nodes</span>: <span class='boolvalue'>false</span>,
+        }
     }
 
     <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
@@ -1027,6 +1059,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 

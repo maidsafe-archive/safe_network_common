@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/routing-0.23.1/src/lib.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/routing-0.24.0/src/lib.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>lib.rs.html -- source</title>
@@ -234,7 +234,6 @@
 <span id="190">190</span>
 <span id="191">191</span>
 <span id="192">192</span>
-<span id="193">193</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 MaidSafe.net limited.</span>
 <span class='comment'>//</span>
@@ -316,8 +315,7 @@
 <span class='doccomment'>//! use routing::{Node, Event};</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! let (sender, _receiver) = mpsc::channel::&lt;Event&gt;();</span>
-<span class='doccomment'>//! let first_node = false;</span>
-<span class='doccomment'>//! let _ = Node::new(sender, first_node).unwrap();</span>
+<span class='doccomment'>//! let _ = Node::builder().create(sender).unwrap();</span>
 <span class='doccomment'>//! ```</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! Upon creation, the node will first connect to the network as a client. Once it has client</span>
@@ -424,11 +422,11 @@
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>id</span>::{<span class='ident'>FullId</span>, <span class='ident'>PublicId</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>immutable_data</span>::<span class='ident'>ImmutableData</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>messages</span>::{<span class='ident'>Request</span>, <span class='ident'>Response</span>};
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>node</span>::<span class='ident'>Node</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>node</span>::{<span class='ident'>Node</span>, <span class='ident'>NodeBuilder</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>plain_data</span>::<span class='ident'>PlainData</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>structured_data</span>::{<span class='ident'>MAX_STRUCTURED_DATA_SIZE_IN_BYTES</span>, <span class='ident'>StructuredData</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>types</span>::<span class='ident'>MessageId</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>xor_name</span>::{<span class='ident'>XorName</span>, <span class='ident'>XorNameFromHexError</span>, <span class='ident'>XOR_NAME_LEN</span>, <span class='ident'>XOR_NAME_BITS</span>};
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>xor_name</span>::{<span class='ident'>XOR_NAME_BITS</span>, <span class='ident'>XOR_NAME_LEN</span>, <span class='ident'>XorName</span>, <span class='ident'>XorNameFromHexError</span>};
 </pre>
 </section>
     <section id='search' class="content hidden"></section>
@@ -453,6 +451,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
