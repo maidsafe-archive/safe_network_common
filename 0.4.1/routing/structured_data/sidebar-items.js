@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["MAX_STRUCTURED_DATA_SIZE_IN_BYTES","Maximum allowed size for a Structured Data to grow to"]],"struct":[["StructuredData","Mutable structured data."]]});

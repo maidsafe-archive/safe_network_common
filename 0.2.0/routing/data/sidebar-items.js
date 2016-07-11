@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Data","This is the data types routing handles in the public interface"],["DataIdentifier","An identifier to address a data chunk."]],"struct":[["ImmutableData","An immutable chunk of data."],["PlainData","Plain data with a name and a value."],["StructuredData","Mutable structured data."]]});

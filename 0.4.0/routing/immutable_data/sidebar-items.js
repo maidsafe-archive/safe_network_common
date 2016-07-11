@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["ImmutableData","An immutable chunk of data."]]});

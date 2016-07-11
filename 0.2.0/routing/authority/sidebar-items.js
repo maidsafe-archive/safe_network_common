@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Authority","An entity that can act as a source or destination of a message."]]});

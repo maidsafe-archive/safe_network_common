@@ -1,1 +1,0 @@
-initSidebarItems({"trait":[["Cache","A cache that stores `Response`s keyed by `Requests`. Should be implemented by layers above routing."]]});
