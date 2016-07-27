@@ -1,5 +1,8 @@
 # Safe Network Common - Change Log
 
+## [0.6.0]
+- Depend on routing 0.25.0.
+
 ## [0.5.0]
 - Depend on sodiumoxide 0.0.10 because newer versions break the build.
 
