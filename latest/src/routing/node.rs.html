@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/routing-0.24.0/src/node.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/routing-0.25.0/src/node.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>node.rs.html -- source</title>
@@ -538,6 +538,31 @@
 <span id="494">494</span>
 <span id="495">495</span>
 <span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 MaidSafe.net limited.</span>
 <span class='comment'>//</span>
@@ -556,6 +581,8 @@
 <span class='comment'>// Please review the Licences for the specific language governing permissions and limitations</span>
 <span class='comment'>// relating to use of the SAFE Network Software.</span>
 
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
+<span class='kw'>use</span> <span class='ident'>kademlia_routing_table</span>::<span class='ident'>RoutingTable</span>;
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>))]</span>
 <span class='kw'>use</span> <span class='ident'>maidsafe_utilities</span>::<span class='ident'>thread</span>::<span class='ident'>RaiiThreadJoiner</span>;
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>))]</span>
@@ -567,23 +594,23 @@
 <span class='kw'>use</span> <span class='ident'>action</span>::<span class='ident'>Action</span>;
 <span class='kw'>use</span> <span class='ident'>authority</span>::<span class='ident'>Authority</span>;
 <span class='kw'>use</span> <span class='ident'>cache</span>::{<span class='ident'>Cache</span>, <span class='ident'>NullCache</span>};
-<span class='kw'>use</span> <span class='ident'>core</span>::{<span class='ident'>Core</span>, <span class='ident'>Role</span>};
 <span class='kw'>use</span> <span class='ident'>data</span>::{<span class='ident'>Data</span>, <span class='ident'>DataIdentifier</span>};
 <span class='kw'>use</span> <span class='ident'>error</span>::{<span class='ident'>InterfaceError</span>, <span class='ident'>RoutingError</span>};
 <span class='kw'>use</span> <span class='ident'>event</span>::<span class='ident'>Event</span>;
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
-<span class='kw'>use</span> <span class='ident'>kademlia_routing_table</span>::<span class='ident'>RoutingTable</span>;
+<span class='kw'>use</span> <span class='ident'>id</span>::<span class='ident'>FullId</span>;
 <span class='kw'>use</span> <span class='ident'>messages</span>::{<span class='ident'>CLIENT_GET_PRIORITY</span>, <span class='ident'>DEFAULT_PRIORITY</span>, <span class='ident'>RELOCATE_PRIORITY</span>, <span class='ident'>Request</span>, <span class='ident'>Response</span>,
                <span class='ident'>UserMessage</span>};
+<span class='kw'>use</span> <span class='ident'>state_machine</span>::{<span class='ident'>State</span>, <span class='ident'>StateMachine</span>};
+<span class='kw'>use</span> <span class='ident'>states</span>;
+<span class='kw'>use</span> <span class='ident'>types</span>::{<span class='ident'>MessageId</span>, <span class='ident'>RoutingActionSender</span>};
 <span class='kw'>use</span> <span class='ident'>xor_name</span>::<span class='ident'>XorName</span>;
-<span class='kw'>use</span> <span class='ident'>types</span>::<span class='ident'>MessageId</span>;
 
 <span class='kw'>type</span> <span class='ident'>RoutingResult</span> <span class='op'>=</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>RoutingError</span><span class='op'>&gt;</span>;
 
 <span class='doccomment'>/// A builder to configure and create a new `Node`.</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>NodeBuilder</span> {
     <span class='ident'>cache</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Cache</span><span class='op'>&gt;</span>,
-    <span class='ident'>role</span>: <span class='ident'>Role</span>,
+    <span class='ident'>first</span>: <span class='ident'>bool</span>,
     <span class='ident'>deny_other_local_nodes</span>: <span class='ident'>bool</span>,
 }
 
@@ -595,11 +622,7 @@
 
     <span class='doccomment'>/// Configures the node to start a new network instead of joining an existing one.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>first</span>(<span class='self'>self</span>, <span class='ident'>first</span>: <span class='ident'>bool</span>) <span class='op'>-&gt;</span> <span class='ident'>NodeBuilder</span> {
-        <span class='kw'>if</span> <span class='ident'>first</span> {
-            <span class='ident'>NodeBuilder</span> { <span class='ident'>role</span>: <span class='ident'>Role</span>::<span class='ident'>FirstNode</span>, ..<span class='self'>self</span> }
-        } <span class='kw'>else</span> {
-            <span class='ident'>NodeBuilder</span> { <span class='ident'>role</span>: <span class='ident'>Role</span>::<span class='ident'>Node</span>, ..<span class='self'>self</span> }
-        }
+        <span class='ident'>NodeBuilder</span> { <span class='ident'>first</span>: <span class='ident'>first</span>, ..<span class='self'>self</span> }
     }
 
     <span class='doccomment'>/// Causes node creation to fail if another node on the local network is detected.</span>
@@ -618,15 +641,12 @@
         <span class='ident'>sodiumoxide</span>::<span class='ident'>init</span>();  <span class='comment'>// enable shared global (i.e. safe to multithread now)</span>
 
         <span class='comment'>// start the handler for routing without a restriction to become a full node</span>
-        <span class='kw'>let</span> (<span class='ident'>action_sender</span>, <span class='kw-2'>mut</span> <span class='ident'>core</span>) <span class='op'>=</span> <span class='ident'>Core</span>::<span class='ident'>new</span>(<span class='ident'>event_sender</span>,
-                                                  <span class='self'>self</span>.<span class='ident'>role</span>,
-                                                  <span class='prelude-val'>None</span>,
-                                                  <span class='self'>self</span>.<span class='ident'>cache</span>,
-                                                  <span class='self'>self</span>.<span class='ident'>deny_other_local_nodes</span>);
+        <span class='kw'>let</span> (<span class='ident'>action_sender</span>, <span class='kw-2'>mut</span> <span class='ident'>machine</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>make_state_machine</span>(<span class='ident'>event_sender</span>);
+
         <span class='kw'>let</span> (<span class='ident'>tx</span>, <span class='ident'>rx</span>) <span class='op'>=</span> <span class='ident'>channel</span>();
 
         <span class='kw'>let</span> <span class='ident'>raii_joiner</span> <span class='op'>=</span> <span class='ident'>RaiiThreadJoiner</span>::<span class='ident'>new</span>(<span class='macro'>thread</span><span class='macro'>!</span>(<span class='string'>&quot;Node thread&quot;</span>, <span class='kw'>move</span> <span class='op'>||</span> {
-            <span class='ident'>core</span>.<span class='ident'>run</span>();
+            <span class='ident'>machine</span>.<span class='ident'>run</span>();
         }));
 
         <span class='prelude-val'>Ok</span>(<span class='ident'>Node</span> {
@@ -641,18 +661,48 @@
     <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>create</span>(<span class='self'>self</span>, <span class='ident'>event_sender</span>: <span class='ident'>Sender</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Node</span>, <span class='ident'>RoutingError</span><span class='op'>&gt;</span> {
         <span class='comment'>// start the handler for routing without a restriction to become a full node</span>
-        <span class='kw'>let</span> (<span class='ident'>action_sender</span>, <span class='ident'>core</span>) <span class='op'>=</span> <span class='ident'>Core</span>::<span class='ident'>new</span>(<span class='ident'>event_sender</span>,
-                                              <span class='self'>self</span>.<span class='ident'>role</span>,
-                                              <span class='prelude-val'>None</span>,
-                                              <span class='self'>self</span>.<span class='ident'>cache</span>,
-                                              <span class='self'>self</span>.<span class='ident'>deny_other_local_nodes</span>);
+        <span class='kw'>let</span> (<span class='ident'>action_sender</span>, <span class='ident'>machine</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>make_state_machine</span>(<span class='ident'>event_sender</span>);
         <span class='kw'>let</span> (<span class='ident'>tx</span>, <span class='ident'>rx</span>) <span class='op'>=</span> <span class='ident'>channel</span>();
 
         <span class='prelude-val'>Ok</span>(<span class='ident'>Node</span> {
             <span class='ident'>interface_result_tx</span>: <span class='ident'>tx</span>,
             <span class='ident'>interface_result_rx</span>: <span class='ident'>rx</span>,
             <span class='ident'>action_sender</span>: <span class='ident'>action_sender</span>,
-            <span class='ident'>core</span>: <span class='ident'>RefCell</span>::<span class='ident'>new</span>(<span class='ident'>core</span>),
+            <span class='ident'>machine</span>: <span class='ident'>RefCell</span>::<span class='ident'>new</span>(<span class='ident'>machine</span>),
+        })
+    }
+
+    <span class='kw'>fn</span> <span class='ident'>make_state_machine</span>(<span class='self'>self</span>,
+                          <span class='ident'>event_sender</span>: <span class='ident'>Sender</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>)
+                          <span class='op'>-&gt;</span> (<span class='ident'>RoutingActionSender</span>, <span class='ident'>StateMachine</span>) {
+        <span class='kw'>let</span> <span class='ident'>full_id</span> <span class='op'>=</span> <span class='ident'>FullId</span>::<span class='ident'>new</span>();
+
+        <span class='ident'>StateMachine</span>::<span class='ident'>new</span>(<span class='kw'>move</span> <span class='op'>|</span><span class='ident'>crust_service</span>, <span class='ident'>timer</span><span class='op'>|</span> {
+            <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>first</span> {
+                <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>state</span>) <span class='op'>=</span> <span class='ident'>states</span>::<span class='ident'>Node</span>::<span class='ident'>first</span>(<span class='self'>self</span>.<span class='ident'>cache</span>,
+                                                         <span class='ident'>crust_service</span>,
+                                                         <span class='ident'>event_sender</span>,
+                                                         <span class='ident'>full_id</span>,
+                                                         <span class='ident'>timer</span>) {
+                    <span class='ident'>State</span>::<span class='ident'>Node</span>(<span class='ident'>state</span>)
+                } <span class='kw'>else</span> {
+                    <span class='ident'>State</span>::<span class='ident'>Terminated</span>
+                }
+            } <span class='kw'>else</span> <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>deny_other_local_nodes</span> <span class='op'>&amp;&amp;</span> <span class='ident'>crust_service</span>.<span class='ident'>has_peers_on_lan</span>() {
+                <span class='macro'>error</span><span class='macro'>!</span>(<span class='string'>&quot;Bootstrapping({:?}) More than 1 routing node found on LAN. Currently \
+                        this is not supported&quot;</span>,
+                       <span class='ident'>full_id</span>.<span class='ident'>public_id</span>().<span class='ident'>name</span>());
+
+                <span class='kw'>let</span> _ <span class='op'>=</span> <span class='ident'>event_sender</span>.<span class='ident'>send</span>(<span class='ident'>Event</span>::<span class='ident'>Terminate</span>);
+                <span class='ident'>State</span>::<span class='ident'>Terminated</span>
+            } <span class='kw'>else</span> {
+                <span class='ident'>State</span>::<span class='ident'>Bootstrapping</span>(<span class='ident'>states</span>::<span class='ident'>Bootstrapping</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>cache</span>,
+                                                                <span class='boolvalue'>false</span>,
+                                                                <span class='ident'>crust_service</span>,
+                                                                <span class='ident'>event_sender</span>,
+                                                                <span class='ident'>full_id</span>,
+                                                                <span class='ident'>timer</span>))
+            }
         })
     }
 }
@@ -671,10 +721,10 @@
     <span class='ident'>action_sender</span>: ::<span class='ident'>types</span>::<span class='ident'>RoutingActionSender</span>,
 
     <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
-    <span class='ident'>core</span>: <span class='ident'>RefCell</span><span class='op'>&lt;</span><span class='ident'>Core</span><span class='op'>&gt;</span>,
+    <span class='ident'>machine</span>: <span class='ident'>RefCell</span><span class='op'>&lt;</span><span class='ident'>StateMachine</span><span class='op'>&gt;</span>,
 
     <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>))]</span>
-    <span class='ident'>_raii_joiner</span>: ::<span class='ident'>maidsafe_utilities</span>::<span class='ident'>thread</span>::<span class='ident'>RaiiThreadJoiner</span>,
+    <span class='ident'>_raii_joiner</span>: <span class='ident'>RaiiThreadJoiner</span>,
 }
 
 <span class='kw'>impl</span> <span class='ident'>Node</span> {
@@ -682,7 +732,7 @@
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>builder</span>() <span class='op'>-&gt;</span> <span class='ident'>NodeBuilder</span> {
         <span class='ident'>NodeBuilder</span> {
             <span class='ident'>cache</span>: <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>NullCache</span>),
-            <span class='ident'>role</span>: <span class='ident'>Role</span>::<span class='ident'>Node</span>,
+            <span class='ident'>first</span>: <span class='boolvalue'>false</span>,
             <span class='ident'>deny_other_local_nodes</span>: <span class='boolvalue'>false</span>,
         }
     }
@@ -690,31 +740,31 @@
     <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
     <span class='doccomment'>/// Poll and process all events in this node&#39;s `Core` instance.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>poll</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='self'>self</span>.<span class='ident'>core</span>.<span class='ident'>borrow_mut</span>().<span class='ident'>poll</span>()
+        <span class='self'>self</span>.<span class='ident'>machine</span>.<span class='ident'>borrow_mut</span>().<span class='ident'>poll</span>()
     }
 
     <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
     <span class='doccomment'>/// Resend all unacknowledged messages.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>resend_unacknowledged</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='self'>self</span>.<span class='ident'>core</span>.<span class='ident'>borrow_mut</span>().<span class='ident'>resend_unacknowledged</span>()
+        <span class='self'>self</span>.<span class='ident'>machine</span>.<span class='ident'>borrow_mut</span>().<span class='ident'>current_mut</span>().<span class='ident'>resend_unacknowledged</span>()
     }
 
     <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
     <span class='doccomment'>/// Are there any unacknowledged messages?</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>has_unacknowledged</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='self'>self</span>.<span class='ident'>core</span>.<span class='ident'>borrow</span>().<span class='ident'>has_unacknowledged</span>()
+        <span class='self'>self</span>.<span class='ident'>machine</span>.<span class='ident'>borrow</span>().<span class='ident'>current</span>().<span class='ident'>has_unacknowledged</span>()
     }
 
     <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
     <span class='doccomment'>/// Routing table of this node.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>routing_table</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>RoutingTable</span><span class='op'>&lt;</span><span class='ident'>XorName</span><span class='op'>&gt;</span> {
-        <span class='self'>self</span>.<span class='ident'>core</span>.<span class='ident'>borrow</span>().<span class='ident'>routing_table</span>().<span class='ident'>to_names</span>()
+        <span class='self'>self</span>.<span class='ident'>machine</span>.<span class='ident'>borrow</span>().<span class='ident'>current</span>().<span class='ident'>routing_table</span>().<span class='ident'>to_names</span>()
     }
 
     <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
     <span class='doccomment'>/// Resend all unacknowledged messages.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>clear_state</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) {
-        <span class='self'>self</span>.<span class='ident'>core</span>.<span class='ident'>borrow_mut</span>().<span class='ident'>clear_state</span>()
+        <span class='self'>self</span>.<span class='ident'>machine</span>.<span class='ident'>borrow_mut</span>().<span class='ident'>current_mut</span>().<span class='ident'>clear_state</span>()
     }
 
     <span class='doccomment'>/// Send a `Get` request to `dst` to retrieve data from the network.</span>

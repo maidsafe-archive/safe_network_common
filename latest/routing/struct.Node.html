@@ -47,7 +47,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-6283' class='srclink' href='../src/routing/node.rs.html#127-137' title='goto source code'>[src]</a></span></h1>
+               </span><a id='src-4950' class='srclink' href='../src/routing/node.rs.html#152-162' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct Node {
     // some fields omitted
 }</pre><div class='docblock'><p>Interface for sending and receiving messages to and from other nodes, in the role of a full
@@ -58,7 +58,7 @@ methods can be used to send requests and responses as either an individual <code
 a part of a group authority. Their <code>src</code> argument indicates that role, so it must always either
 be the <code>ManagedNode</code> with this node&#39;s name, or the <code>ClientManager</code> or <code>NodeManager</code> or
 <code>NaeManager</code> with the address of a client, node or data element that this node is close to.</p>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../routing/struct.Node.html' title='routing::Node'>Node</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-6288' class='srclink' href='../src/routing/node.rs.html#139-436' title='goto source code'>[src]</a></span></h3>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../routing/struct.Node.html' title='routing::Node'>Node</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-4955' class='srclink' href='../src/routing/node.rs.html#164-461' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'><h4 id='method.builder' class='method'><code>fn <a href='#method.builder' class='fnname'>builder</a>() -&gt; <a class='struct' href='../routing/struct.NodeBuilder.html' title='routing::NodeBuilder'>NodeBuilder</a></code></h4>
 <div class='docblock'><p>Creates a new builder to configure and create a <code>Node</code>.</p>
 </div><h4 id='method.send_get_request' class='method'><code>fn <a href='#method.send_get_request' class='fnname'>send_get_request</a>(&amp;self, src: <a class='enum' href='../routing/enum.Authority.html' title='routing::Authority'>Authority</a>, dst: <a class='enum' href='../routing/enum.Authority.html' title='routing::Authority'>Authority</a>, data_request: <a class='enum' href='../routing/enum.DataIdentifier.html' title='routing::DataIdentifier'>DataIdentifier</a>, id: <a class='struct' href='../routing/struct.MessageId.html' title='routing::MessageId'>MessageId</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../routing/enum.InterfaceError.html' title='routing::InterfaceError'>InterfaceError</a>&gt;</code></h4>
@@ -97,7 +97,7 @@ be the <code>ManagedNode</code> with this node&#39;s name, or the <code>ClientMa
 <div class='docblock'><p>Returns the name of this node.</p>
 </div><h4 id='method.quorum_size' class='method'><code>fn <a href='#method.quorum_size' class='fnname'>quorum_size</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>, <a class='enum' href='../routing/enum.InterfaceError.html' title='routing::InterfaceError'>InterfaceError</a>&gt;</code></h4>
 <div class='docblock'><p>Returns the name of this node.</p>
-</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='../routing/struct.Node.html' title='routing::Node'>Node</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-6437' class='srclink' href='../src/routing/node.rs.html#438-444' title='goto source code'>[src]</a></span></h3>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='../routing/struct.Node.html' title='routing::Node'>Node</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-5104' class='srclink' href='../src/routing/node.rs.html#463-469' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'><h4 id='method.drop' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop' class='fnname'>drop</a>(&amp;mut self)</code></h4>
 <div class='docblock'><p>A method called when the value goes out of scope. <a href="https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop">Read more</a></p>
 </div></div></section>

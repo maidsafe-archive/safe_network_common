@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/routing-0.24.0/src/messages.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/routing-0.25.0/src/messages.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>messages.rs.html -- source</title>
@@ -978,6 +978,10 @@
 <span id="934">934</span>
 <span id="935">935</span>
 <span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
+<span id="939">939</span>
+<span id="940">940</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 MaidSafe.net limited.</span>
 <span class='comment'>//</span>
@@ -1009,6 +1013,7 @@
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>::{<span class='self'>self</span>, <span class='ident'>Debug</span>, <span class='ident'>Formatter</span>};
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>time</span>::<span class='ident'>Duration</span>;
 
+<span class='kw'>use</span> <span class='ident'>ack_manager</span>::<span class='ident'>Ack</span>;
 <span class='kw'>use</span> <span class='ident'>authority</span>::<span class='ident'>Authority</span>;
 <span class='kw'>use</span> <span class='ident'>data</span>::{<span class='ident'>Data</span>, <span class='ident'>DataIdentifier</span>};
 <span class='kw'>use</span> <span class='ident'>error</span>::<span class='ident'>RoutingError</span>;
@@ -1089,9 +1094,6 @@
         <span class='doccomment'>/// Signature of the originator of this message.</span>
         <span class='ident'>signature</span>: <span class='ident'>sign</span>::<span class='ident'>Signature</span>,
     },
-    <span class='doccomment'>/// Sent from a client that became a full routing node. The recipient can remove it from its</span>
-    <span class='doccomment'>/// client map.</span>
-    <span class='ident'>ClientToNode</span>,
     <span class='doccomment'>/// Sent from a node that found a new node in the network to all its contacts who might need to</span>
     <span class='doccomment'>/// add the new node to their routing table.</span>
     <span class='ident'>NewNode</span>(<span class='ident'>PublicId</span>),
@@ -1243,6 +1245,15 @@
 }
 
 <span class='kw'>impl</span> <span class='ident'>RoutingMessage</span> {
+    <span class='doccomment'>/// Create ack for the given message</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>ack_from</span>(<span class='ident'>msg</span>: <span class='kw-2'>&amp;</span><span class='ident'>RoutingMessage</span>, <span class='ident'>src</span>: <span class='ident'>Authority</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='self'>Self</span>, <span class='ident'>RoutingError</span><span class='op'>&gt;</span> {
+        <span class='prelude-val'>Ok</span>(<span class='ident'>RoutingMessage</span> {
+            <span class='ident'>src</span>: <span class='ident'>src</span>,
+            <span class='ident'>dst</span>: <span class='ident'>msg</span>.<span class='ident'>src</span>.<span class='ident'>clone</span>(),
+            <span class='ident'>content</span>: <span class='ident'>MessageContent</span>::<span class='ident'>Ack</span>(<span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>Ack</span>::<span class='ident'>compute</span>(<span class='ident'>msg</span>)), <span class='ident'>msg</span>.<span class='ident'>priority</span>()),
+        })
+    }
+
     <span class='doccomment'>/// Returns the priority Crust should send this message with.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>priority</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u8</span> {
         <span class='self'>self</span>.<span class='ident'>content</span>.<span class='ident'>priority</span>()
@@ -1327,7 +1338,7 @@
     },
     <span class='doccomment'>/// Acknowledge receipt of any message except an `Ack`. It contains the hash of the</span>
     <span class='doccomment'>/// received message and the priority.</span>
-    <span class='ident'>Ack</span>(<span class='ident'>u64</span>, <span class='ident'>u8</span>),
+    <span class='ident'>Ack</span>(<span class='ident'>Ack</span>, <span class='ident'>u8</span>),
     <span class='doccomment'>/// The hash of a `RoutingMessage`. This is sent by the source group authority members as a</span>
     <span class='doccomment'>/// confirmation, so that only one of them needs to send the full message. The second field is</span>
     <span class='doccomment'>/// the message priority.</span>
@@ -1371,7 +1382,6 @@
                        <span class='ident'>current_quorum_size</span>)
             }
             <span class='ident'>DirectMessage</span>::<span class='ident'>BootstrapDeny</span> <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>formatter</span>, <span class='string'>&quot;BootstrapDeny&quot;</span>),
-            <span class='ident'>DirectMessage</span>::<span class='ident'>ClientToNode</span> <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>formatter</span>, <span class='string'>&quot;ClientToNode&quot;</span>),
             <span class='ident'>DirectMessage</span>::<span class='ident'>ClientIdentify</span> { <span class='ident'>client_restriction</span>: <span class='boolvalue'>true</span>, .. } <span class='op'>=&gt;</span> {
                 <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>formatter</span>, <span class='string'>&quot;ClientIdentify (client only)&quot;</span>)
             }
@@ -1450,9 +1460,7 @@
                        <span class='ident'>close_group_ids</span>,
                        <span class='ident'>message_id</span>)
             }
-            <span class='ident'>MessageContent</span>::<span class='ident'>Ack</span>(<span class='kw-2'>ref</span> <span class='ident'>ack</span>, <span class='ident'>priority</span>) <span class='op'>=&gt;</span> {
-                <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>formatter</span>, <span class='string'>&quot;Ack({:x}, {})&quot;</span>, <span class='ident'>ack</span>, <span class='ident'>priority</span>)
-            }
+            <span class='ident'>MessageContent</span>::<span class='ident'>Ack</span>(<span class='ident'>ack</span>, <span class='ident'>priority</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>formatter</span>, <span class='string'>&quot;Ack({}, {})&quot;</span>, <span class='ident'>ack</span>, <span class='ident'>priority</span>),
             <span class='ident'>MessageContent</span>::<span class='ident'>GroupMessageHash</span>(<span class='kw-2'>ref</span> <span class='ident'>hash</span>, <span class='ident'>priority</span>) <span class='op'>=&gt;</span> {
                 <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>formatter</span>,
                        <span class='string'>&quot;GroupMessageHash({}, {})&quot;</span>,
