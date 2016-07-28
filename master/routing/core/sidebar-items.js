@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["GROUP_SIZE","The group size for the routing table. This is the maximum that can be used for consensus."],["QUORUM_SIZE","The quorum for group consensus."]]});

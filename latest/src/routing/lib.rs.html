@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/routing-0.25.0/src/lib.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/routing-0.23.3/src/lib.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>lib.rs.html -- source</title>
@@ -234,12 +234,6 @@
 <span id="190">190</span>
 <span id="191">191</span>
 <span id="192">192</span>
-<span id="193">193</span>
-<span id="194">194</span>
-<span id="195">195</span>
-<span id="196">196</span>
-<span id="197">197</span>
-<span id="198">198</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 MaidSafe.net limited.</span>
 <span class='comment'>//</span>
@@ -384,25 +378,22 @@
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>sodiumoxide_extras</span>;
 
-<span class='kw'>mod</span> <span class='ident'>ack_manager</span>;
 <span class='kw'>mod</span> <span class='ident'>action</span>;
 <span class='kw'>mod</span> <span class='ident'>authority</span>;
 <span class='kw'>mod</span> <span class='ident'>client</span>;
+
 <span class='kw'>mod</span> <span class='ident'>cache</span>;
+<span class='kw'>mod</span> <span class='ident'>core</span>;
 <span class='kw'>mod</span> <span class='ident'>data</span>;
 <span class='kw'>mod</span> <span class='ident'>error</span>;
 <span class='kw'>mod</span> <span class='ident'>event</span>;
 <span class='kw'>mod</span> <span class='ident'>id</span>;
 <span class='kw'>mod</span> <span class='ident'>immutable_data</span>;
-<span class='kw'>mod</span> <span class='ident'>message_accumulator</span>;
 <span class='kw'>mod</span> <span class='ident'>message_filter</span>;
 <span class='kw'>mod</span> <span class='ident'>messages</span>;
 <span class='kw'>mod</span> <span class='ident'>node</span>;
 <span class='kw'>mod</span> <span class='ident'>peer_manager</span>;
 <span class='kw'>mod</span> <span class='ident'>plain_data</span>;
-<span class='kw'>mod</span> <span class='ident'>signed_message_filter</span>;
-<span class='kw'>mod</span> <span class='ident'>state_machine</span>;
-<span class='kw'>mod</span> <span class='ident'>states</span>;
 <span class='kw'>mod</span> <span class='ident'>stats</span>;
 <span class='kw'>mod</span> <span class='ident'>structured_data</span>;
 <span class='kw'>mod</span> <span class='ident'>timer</span>;
@@ -418,15 +409,13 @@
 <span class='doccomment'>/// Mock crust</span>
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>mock_crust</span>;
-
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>mock_crust</span>::<span class='ident'>crust</span>;
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use-mock-crust&quot;</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>core_tests</span>::<span class='ident'>verify_kademlia_invariant</span>;
 
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>authority</span>::<span class='ident'>Authority</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>cache</span>::<span class='ident'>Cache</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>client</span>::<span class='ident'>Client</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>core</span>::{<span class='ident'>GROUP_SIZE</span>, <span class='ident'>QUORUM_SIZE</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>data</span>::{<span class='ident'>Data</span>, <span class='ident'>DataIdentifier</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>error</span>::{<span class='ident'>InterfaceError</span>, <span class='ident'>RoutingError</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>event</span>::<span class='ident'>Event</span>;
@@ -434,11 +423,10 @@
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>immutable_data</span>::<span class='ident'>ImmutableData</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>messages</span>::{<span class='ident'>Request</span>, <span class='ident'>Response</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>node</span>::{<span class='ident'>Node</span>, <span class='ident'>NodeBuilder</span>};
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>peer_manager</span>::{<span class='ident'>GROUP_SIZE</span>, <span class='ident'>QUORUM_SIZE</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>plain_data</span>::<span class='ident'>PlainData</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>structured_data</span>::{<span class='ident'>MAX_STRUCTURED_DATA_SIZE_IN_BYTES</span>, <span class='ident'>StructuredData</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>types</span>::<span class='ident'>MessageId</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>xor_name</span>::{<span class='ident'>XOR_NAME_BITS</span>, <span class='ident'>XOR_NAME_LEN</span>, <span class='ident'>XorName</span>, <span class='ident'>XorNameFromHexError</span>};
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>xor_name</span>::{<span class='ident'>XorName</span>, <span class='ident'>XorNameFromHexError</span>, <span class='ident'>XOR_NAME_LEN</span>, <span class='ident'>XOR_NAME_BITS</span>};
 </pre>
 </section>
     <section id='search' class="content hidden"></section>
