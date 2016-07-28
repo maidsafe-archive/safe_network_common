@@ -1,5 +1,8 @@
 # Safe Network Common - Change Log
 
+## [0.7.0]
+- Revert to routing 0.23.3.
+
 ## [0.6.0]
 - Depend on routing 0.25.0.
 
